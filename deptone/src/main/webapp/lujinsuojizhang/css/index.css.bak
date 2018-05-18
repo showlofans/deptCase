@@ -1,0 +1,337 @@
+﻿*{
+	margin: 0px;
+	padding: 0px;
+	font-family: "微软雅黑";
+
+}
+.body{
+	background: #eee;
+
+}
+a{
+	text-decoration: none;
+	color:#ccc;f
+}
+.a_selectedcolor{
+	color:#fff;
+}
+a:hover{
+	text-decoration: none;
+}
+ul,li{
+	list-style-type: none;
+}
+img{
+	border:none;
+}
+.mainlayout{
+	min-height:800px;
+	background: #F1F1F1;
+}
+.buttonstyle{
+	width: 120px;
+	height: 30px;
+	font-size: 14px;
+}
+.show{
+	display:block;
+}
+.hide{
+	display:none;
+}
+/*
+	top端样式
+*/
+
+.main_toplayout{
+	min-height:100px;
+	background:#F0F0F0;
+	min-width:1160px;
+}
+.main_toplayout .header{
+	background:#fff;
+	height:90px;
+}
+.main_toplayout .header-left{
+	width: 80%;
+	margin-left: 30px;
+}
+.main_toplayout .header-left a{
+	display: inline-block;
+	padding: 0 10px;
+}
+/*
+	左边菜单目录样式
+*/
+.layout{
+	 min-height:700px;
+	 float:left;
+	 background:#1366A0;
+	 width:260px;
+}
+.left_layout{
+	min-height:700px;
+	background:url("../images/beijing.png");
+	width: 253px;
+}
+.menu{
+	height: 50px;
+	margin: 20px 0 0 10px;
+	line-height: 50px;
+	width:85%;
+	padding-left: 20px;
+	font-size: 20px;
+	border-radius: 5px 5px 5px 5px;
+}
+.menu_color{
+	padding-bottom: 20px;
+	width: 253px;
+}
+.menu span{
+	font-size: 18px;
+	color:#E4E4E4;
+	font-weight:bold;
+	word-spacing: 8px;
+	letter-spacing: 2px;
+}
+.selecteds{
+	background: #84C5F1  !important;
+	color:#fff;
+}
+.no_selected{
+		background: #fff;
+}
+
+.layout .leftmenu{
+	width:85%;
+	margin-left:10px;
+	padding-left: 20px;
+}
+.layout .leftmenu li{
+	 cursor:pointer;
+	 padding: 10px;
+	 width: 88%;
+	 margin-top: 15px;
+	 border-radius: 5px 5px 5px 5px;
+}
+.layout .leftmenu li:hover{
+	background:#67B3E8;
+}
+.layout .leftmenu li a:hover,.layout .leftmenu li span:hover{
+		color:#fff;
+}
+.fa-credit-card:before,.fa-list-alt:before,.fa-desktop:before,
+.fa-institution:before, .fa-bank:before, .fa-university:before{
+	padding-right:10px;
+}
+.fa-plus-square-o:before{
+	padding-right:10px;
+	color:#fff;
+}
+.fa-bank-selected:before{
+	content: "\f19c";
+}
+.fa-desktop-selected:before{
+	content: "\f108";
+}
+.fa-credit-card-selected:before{
+	content: "\f09d";
+}
+.fa-list-alt-selected:before{
+	content: "\f022";
+}
+.fa-bank-selected:before,.fa-desktop-selected:before,
+.fa-credit-card-selected:before,.fa-list-alt-selected:before{
+	padding-right:10px;
+	color:#fff;
+}
+.fa-bank-selected,.fa-desktop-selected,
+.fa-credit-card-selected,.fa-list-alt-selected{
+	background: #67B3E8  !important;
+}
+.fa-bank,.fa-desktop,
+.fa-credit-card,.fa-list-alt{
+	background: #146EAB;
+}
+.r_homepage{
+	padding-top:20px;
+}
+/*
+	右边tab样式
+*/
+.right_layout{
+	min-height: 650px;
+	min-width:900px;
+	margin-left: 270px;
+	margin-right: 20px;
+	background: #fff;
+	box-shadow: 3px 3px 3px #888888;
+}
+.tabdiv{
+	height: 30px;
+	background: #fff;
+	overflow: hidden;
+	border-bottom:2px solid #89C3EB;
+	box-shadow: 0px 1px 1px #89C3EB;
+}
+.tab{
+	display: inline-block;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	margin: 0px 1px 5px 0;
+	overflow: hidden;
+	padding-bottom: 5px;
+	border-radius: 5px;	
+	border:2px solid #89C3EB;
+	border-bottom:none;
+}
+.fa-remove{
+	display: inline-block;
+	float: right;
+	height: 30px;
+	line-height: 30px;
+	margin-right: 5px;
+}
+
+/*
+	右边菜单对应内容区域样式
+*/
+
+
+/*
+	陆金所网银文件处理内容样式:banking_processing_tit
+	P2P对账查询内容样式:reconciliation_query
+	手续费支付:fee_payment
+	对公充值:Recharge_public
+	代偿:compensatory
+	开票流水核对报表:check_statements
+	关联交易开票流水上传:related_transaction_upload
+	批量线程管理:bulk_management
+	批量任务管理:batch_task_management
+*/
+
+.banking_processing_tit,.reconciliation_query,.fee_payment,.Recharge_public,.compensatory,
+.check_statements,.related_transaction_upload,.bulk_management,.batch_task_management{
+	width:98%;
+	margin:10px auto;
+	background: #FAF7F7;
+	box-shadow: 1px 1px 1px 1px #F0E8E8;
+	border:1px dotted #F0E8E8;
+}
+.banking_processing_tit tr,.reconciliation_query tr,.fee_payment tr,.Recharge_public tr,.compensatory tr,
+.check_statements tr,.related_transaction_upload tr,.bulk_management th,.batch_task_management th{
+	height:60px;
+}
+.bulk_management tr,.batch_task_management tr{
+	height:35px;
+}
+.banking_processing_tit tr td,.reconciliation_query tr td,.fee_payment tr td,.Recharge_public tr td,
+.compensatory tr td,.check_statements tr td,.related_transaction_upload tr td,
+.bulk_management tr td,.bulk_management tr th,.batch_task_management tr td,.batch_task_management tr th{
+	text-align:center;
+}
+/* 查询后出现内容table样式*/
+.banking_processing_con,.banking_processing_con_tit{
+	width:98%;
+	margin:10px auto;
+	background: #FAF7F7;
+	border-collapse: collapse;
+	box-shadow: 1px 1px 1px 1px #F0E8E8;
+	border:1px dotted #F0E8E8;
+}
+.banking_processing_con_tit tr th{
+	font-size: 15px;
+	height:25px;
+	color: #4f5b75;
+	font-weight: bold;
+	background: #DBEEFF;
+	border-bottom: 2px solid #89C3EB;
+	box-shadow: 0px 1px 1px #89C3EB;
+	border-collapse: collapse;
+}
+.banking_processing_con_tit tr td{
+	height:30px;
+	font-size:14px;
+	font-weight: 200;
+	padding:3px 0;
+}
+.table_tdheight{
+	height: 30px;
+	background: #DBEEFF;
+	border-bottom: 2px solid #89C3EB;
+	box-shadow: 0px 1px 1px #89C3EB;
+}
+.table_tdheight span{
+	background: #89C3EB;
+	height:35px;
+	line-height:35px;
+	display:inline-block;
+	color: #fff;
+	padding: 0 10px;
+	word-spacing: 8px;
+	letter-spacing: 1px;
+	border-radius: 4px;
+}
+.tr_selected{
+	background: #B8DBF0;
+}
+
+/* 分页样式*/
+.pagination {
+    border-radius: 3px;
+    text-align:center;
+}
+.pagination a {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    outline: none;
+    border-right: 1px solid #CDCDCD;
+    border-left: 1px solid #CDCDCD;
+    color: #555555;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.pagination a:first-child {
+    border: none;
+    border-radius: 2px 0 0 2px;
+}
+
+.pagination a:last-child {
+    border: none;
+    border-radius: 0 2px 2px 0;
+}
+
+.pagination input {
+    margin: 0;
+    padding: 0;
+    width: 120px;
+    height: 20px;
+    outline: none;
+    border: none;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.pagination a {
+    height: 30px;
+    width: 60px;
+    font-size: 25px;
+    line-height: 30px;
+    color:#808083;
+}
+.pagination a:hover{
+	color:#fff;
+}
+.pagination input {
+    width: 100px;
+    height: 30px;
+    font-size: 12px;
+    line-height: 30px;
+}
