@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.deptcase.casemgt.dao.CaseContactPoMapper" >
+	<sql id="t_contact">case_contact</sql>
+	
+  <resultMap id="BaseResultMap" type="com.deptcase.casemgt.entity.CaseContactPo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+    <result column="contact_dcid" property="contactDcid" jdbcType="VARCHAR" />
+    <result column="household_ship" property="householdShip" jdbcType="VARCHAR" />
+    <result column="household_location" property="householdLocation" jdbcType="VARCHAR" />
+    <result column="other_contact_ship" property="otherContactShip" jdbcType="VARCHAR" />
+    <result column="contact_number" property="contactNumber" jdbcType="VARCHAR" />
+    <result column="contact_location" property="contactLocation" jdbcType="VARCHAR" />
+    <result column="contact_remark" property="contactRemark" jdbcType="VARCHAR" />
+    <result column="last_access" property="lastAccess" jdbcType="BIGINT" />
+    <result column="contact_add_user" property="contactAddUser" jdbcType="INTEGER" />
+    <result column="household_dcid" property="householdDcid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, contact_name, contact_dcid, household_ship, household_location, other_contact_ship, 
+    contact_number, contact_location, contact_remark, last_access, contact_add_user,household_dcid
+  </sql>
+  <sql id="Add_Column_List" >
+    contact_name, contact_dcid, household_ship, household_location, other_contact_ship, 
+    contact_number, contact_location, contact_remark, 
+    last_access, contact_add_user, household_dcid
+  </sql>
+   <!-- 批量添加案件联系人 -->
+   <insert id="batchAddCaseContactList" useGeneratedKeys="true" parameterType="java.util.List">
+  	insert into <include refid="t_contact"></include>
+  	(<include refid="Add_Column_List"></include>)
+  	values
+  	<foreach collection="list" item="caseContact" index="index" separator=",">
+  		(#{caseContact.contactName},#{caseContact.contactDcid},#{caseContact.householdShip},
+  		#{caseContact.householdLocation},#{caseContact.otherContactShip},
+  		#{caseContact.contactNumber},#{caseContact.contactLocation},#{caseContact.contactRemark},
+  		#{caseContact.customerLocation},#{caseContact.lastAccess},#{caseContact.contactAddUser},
+  		#{caseContact.householdDcid})
+  	</foreach>
+  </insert>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from case_contact
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from case_contact
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.deptcase.casemgt.entity.CaseContactPo" >
+    insert into case_contact (id, contact_name, contact_dcid, 
+      household_ship, household_location, other_contact_ship, 
+      contact_number, contact_location, contact_remark, 
+      last_access, contact_add_user)
+    values (#{id,jdbcType=BIGINT}, #{contactName,jdbcType=VARCHAR}, #{contactDcid,jdbcType=VARCHAR}, 
+      #{householdShip,jdbcType=VARCHAR}, #{householdLocation,jdbcType=VARCHAR}, #{otherContactShip,jdbcType=VARCHAR}, 
+      #{contactNumber,jdbcType=VARCHAR}, #{contactLocation,jdbcType=VARCHAR}, #{contactRemark,jdbcType=VARCHAR}, 
+      #{lastAccess,jdbcType=BIGINT}, #{contactAddUser,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.deptcase.casemgt.entity.CaseContactPo" >
+    insert into case_contact
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="contactName != null" >
+        contact_name,
+      </if>
+      <if test="contactDcid != null" >
+        contact_dcid,
+      </if>
+      <if test="householdShip != null" >
+        household_ship,
+      </if>
+      <if test="householdLocation != null" >
+        household_location,
+      </if>
+      <if test="otherContactShip != null" >
+        other_contact_ship,
+      </if>
+      <if test="contactNumber != null" >
+        contact_number,
+      </if>
+      <if test="contactLocation != null" >
+        contact_location,
+      </if>
+      <if test="contactRemark != null" >
+        contact_remark,
+      </if>
+      <if test="lastAccess != null" >
+        last_access,
+      </if>
+      <if test="contactAddUser != null" >
+        contact_add_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="contactName != null" >
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactDcid != null" >
+        #{contactDcid,jdbcType=VARCHAR},
+      </if>
+      <if test="householdShip != null" >
+        #{householdShip,jdbcType=VARCHAR},
+      </if>
+      <if test="householdLocation != null" >
+        #{householdLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="otherContactShip != null" >
+        #{otherContactShip,jdbcType=VARCHAR},
+      </if>
+      <if test="contactNumber != null" >
+        #{contactNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="contactLocation != null" >
+        #{contactLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="contactRemark != null" >
+        #{contactRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="lastAccess != null" >
+        #{lastAccess,jdbcType=BIGINT},
+      </if>
+      <if test="contactAddUser != null" >
+        #{contactAddUser,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.deptcase.casemgt.entity.CaseContactPo" >
+    update case_contact
+    <set >
+      <if test="contactName != null" >
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactDcid != null" >
+        contact_dcid = #{contactDcid,jdbcType=VARCHAR},
+      </if>
+      <if test="householdShip != null" >
+        household_ship = #{householdShip,jdbcType=VARCHAR},
+      </if>
+      <if test="householdLocation != null" >
+        household_location = #{householdLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="otherContactShip != null" >
+        other_contact_ship = #{otherContactShip,jdbcType=VARCHAR},
+      </if>
+      <if test="contactNumber != null" >
+        contact_number = #{contactNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="contactLocation != null" >
+        contact_location = #{contactLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="contactRemark != null" >
+        contact_remark = #{contactRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="lastAccess != null" >
+        last_access = #{lastAccess,jdbcType=BIGINT},
+      </if>
+      <if test="contactAddUser != null" >
+        contact_add_user = #{contactAddUser,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.deptcase.casemgt.entity.CaseContactPo" >
+    update case_contact
+    set contact_name = #{contactName,jdbcType=VARCHAR},
+      contact_dcid = #{contactDcid,jdbcType=VARCHAR},
+      household_ship = #{householdShip,jdbcType=VARCHAR},
+      household_location = #{householdLocation,jdbcType=VARCHAR},
+      other_contact_ship = #{otherContactShip,jdbcType=VARCHAR},
+      contact_number = #{contactNumber,jdbcType=VARCHAR},
+      contact_location = #{contactLocation,jdbcType=VARCHAR},
+      contact_remark = #{contactRemark,jdbcType=VARCHAR},
+      last_access = #{lastAccess,jdbcType=BIGINT},
+      contact_add_user = #{contactAddUser,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

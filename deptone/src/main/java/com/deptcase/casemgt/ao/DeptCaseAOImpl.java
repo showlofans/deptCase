@@ -126,11 +126,25 @@ public class DeptCaseAOImpl implements DeptCaseAO {
 //				logger.info("第" + currentNum + "条商家ID不存在");
 				continue;
 			}
-			DeptCasePo deptCasePo = new DeptCasePo(deptAmount, deptBalance, deptProfit, dcId, caseOrg, customerContact, customerLocation, caseWarrantor, caseCustomer, userId, CaseEventEnum.CASE_IMPORT.getValue());
+			String deptFor = row.get(DeptCaseExcelUtil.RESOURCE_HEAD_DEPT_FOR_AC).trim();
+			if (StringHelper.isTrimEmpty(deptFor))
+			{
+				failNum++;
+//				logger.info("第" + currentNum + "条商家ID不存在");
+				continue;
+			}
+			String warrantorWay = row.get(DeptCaseExcelUtil.RESOURCE_HEAD_WARRANTOR_WAY_AC).trim();
+			if (StringHelper.isTrimEmpty(warrantorWay))
+			{
+				failNum++;
+//				logger.info("第" + currentNum + "条商家ID不存在");
+				continue;
+			}
+			DeptCasePo deptCasePo = new DeptCasePo(deptAmount, deptBalance, deptProfit, dcId, caseOrg, customerContact, customerLocation, caseWarrantor, caseCustomer, userId, CaseEventEnum.CASE_IMPORT.getValue(),deptFor,warrantorWay);
 //			deptCasePo.set
 //			invoiceRecord.setOperator(operator);
 			deptCasePo.setLastAccess(System.currentTimeMillis());
-			deptCasePo.setAccessLog(CaseEventEnum.CASE_IMPORT.getValue());
+//			deptCasePo.setAccessLog(CaseEventEnum.CASE_IMPORT.getValue());
 			deptCasePo.setCreateTime(System.currentTimeMillis());
 			deptCasePo.setDeptEndDate(deptEndDate);
 			deptCasePo.setDeptDate(deptDate);

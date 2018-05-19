@@ -4,7 +4,7 @@
 <sql id="t_case">dept_case</sql>
 
   <resultMap id="BaseResultMap" type="com.deptcase.casemgt.entity.DeptCasePo" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="BIGINT" />
     <result column="dept_date" property="deptDate" jdbcType="BIGINT" />
     <result column="dept_end_date" property="deptEndDate" jdbcType="BIGINT" />
     <result column="dept_amount" property="deptAmount" jdbcType="DOUBLE" />
@@ -17,14 +17,16 @@
     <result column="case_warrantor" property="caseWarrantor" jdbcType="VARCHAR" />
     <result column="case_customer" property="caseCustomer" jdbcType="VARCHAR" />
     <result column="case_admin" property="caseAdmin" jdbcType="INTEGER" />
+    <result column="dept_for" property="deptFor" jdbcType="VARCHAR" />
+    <result column="warrantor_way" property="warrantorWay" jdbcType="VARCHAR" />
     <result column="last_access" property="lastAccess" jdbcType="BIGINT" />
     <result column="access_log" property="accessLog" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Add_Column_List" >
     dept_date, dept_end_date, dept_amount, dept_balance, dept_profit, dc_id, case_org, 
-    customer_contact, customer_location, case_warrantor, case_customer, case_admin, last_access, 
-    access_log, create_time
+    customer_contact, customer_location, case_warrantor, case_customer, case_admin, 
+    dept_for, warrantor_way,last_access, access_log, create_time
   </sql>
    <!-- 批量添加 -->
    <insert id="batchAddCase" useGeneratedKeys="true" parameterType="java.util.List">
@@ -34,20 +36,30 @@
   	<foreach collection="list" item="caseD" index="index" separator=",">
   		(#{caseD.deptDate},#{caseD.deptEndDate},#{caseD.deptAmount},#{caseD.deptBalance},#{caseD.deptProfit},#{caseD.dcId},#{caseD.caseOrg},
   		#{caseD.customerContact},#{caseD.customerLocation},#{caseD.caseWarrantor},#{caseD.caseCustomer},#{caseD.caseAdmin},
-  		#{caseD.lastAccess},#{caseD.accessLog},#{caseD.createTime})
+  		#{caseD.deptFor},#{caseD.warrantorWay},#{caseD.lastAccess},#{caseD.accessLog},#{caseD.createTime})
   	</foreach>
   </insert>
   <sql id="Base_Column_List" >
     id, dept_date, dept_end_date, dept_amount, dept_balance, dept_profit, dc_id, case_org, 
-    customer_contact, customer_location, case_warrantor, case_customer, case_admin, last_access, 
-    access_log, create_time
+    customer_contact, customer_location, case_warrantor, case_customer, case_admin, 
+    dept_for, warrantor_way, last_access,  access_log, create_time
   </sql>
- <!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from dept_case
-    where id = #{id,jdbcType=INTEGER}
-  </select> -->
+  <!-- 获得待绑定的绑定列表 -->
+  <sql id="binding_list">
+  	id,dc_id
+  </sql>
+  <resultMap id="BindingCaseMap" type="com.deptcase.casemgt.entity.CaseBindContactPo" >
+     <id column="id" property="caseId" jdbcType="BIGINT" />
+    <result column="contact_dcid" property="contactDcid" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getBindingCase" parameterType="map" resultMap="BindingCaseMap">
+  	select <include refid="binding_list"></include> from <include refid="t_case"></include> 
+  	 <where>
+  		<if test="dcIds != null">
+	  		AND dc_id in <foreach item="dcId" index="index" collection="dcIds" open="(" separator="," close=")">#{dcId}</foreach>
+  		</if>
+  	 </where>
+  </select>
   
   <select id="countCase" parameterType="map" resultType="int">
   	select count(*) from <include refid="t_case"></include>

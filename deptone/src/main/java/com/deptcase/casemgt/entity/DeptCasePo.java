@@ -1,5 +1,7 @@
 package com.deptcase.casemgt.entity;
 
+import java.util.List;
+
 /**
  * @description: 债务案件
  * @projectName:deptone
@@ -13,35 +15,42 @@ public class DeptCasePo {
 	
     private Integer id;
 
-    private Long deptDate;
+    private Long deptDate;					//贷款日期
 
-    private Long deptEndDate;
+    private Long deptEndDate;				//到期日期
 
-    private Double deptAmount;
+    private Double deptAmount;				//贷款金额
 
-    private Double deptBalance;
+    private Double deptBalance;				//贷款余额
 
-    private Double deptProfit;
+    private Double deptProfit;				//结欠利息
 
-    private String dcId;
+    private String dcId;					//证件号码
 
-    private String caseOrg;
+    private String caseOrg;					//机构名称
 
-    private String customerContact;
+    private String customerContact;			//客户联系方式
 
-    private String customerLocation;
+    private String customerLocation;		//联系地址
 
-    private String caseWarrantor;
+    private String caseWarrantor;			//案件担保人
 
-    private String caseCustomer;
+    private String caseCustomer;			//客户名称
 
-    private Integer caseAdmin;
+    private Integer caseAdmin;				//案件管理人
 
-    private Long lastAccess;
+    private Long lastAccess;				//案件更新时间
 
-    private Integer accessLog;
+    private Integer accessLog;				//案件操作类型
 
-    private Long createTime;
+    private Long createTime;				//案件创建时间
+    
+    private String deptFor;					//贷款用途
+    
+    private String warrantorWay;			//保证方式
+    
+    //
+    private List<String> contactIds;			//联系人身份证号列表（参数）
 
     
     public DeptCasePo() {
@@ -51,7 +60,7 @@ public class DeptCasePo {
 	public DeptCasePo(Double deptAmount, Double deptBalance, Double deptProfit,
 			String dcId, String caseOrg, String customerContact,
 			String customerLocation, String caseWarrantor, String caseCustomer,
-			Integer caseAdmin, Integer accessLog) {
+			Integer caseAdmin, Integer accessLog,  String deptFor, String warrantorWay) {
 		super();
 		this.deptAmount = deptAmount;
 		this.deptBalance = deptBalance;
@@ -64,6 +73,32 @@ public class DeptCasePo {
 		this.caseCustomer = caseCustomer;
 		this.caseAdmin = caseAdmin;
 		this.accessLog = accessLog;
+		this.deptFor=deptFor;
+		this.warrantorWay=warrantorWay;
+	}
+	
+	public List<String> getContactIds() {
+		return contactIds;
+	}
+
+	public void setContactIds(List<String> contactIds) {
+		this.contactIds = contactIds;
+	}
+
+	public String getDeptFor() {
+		return deptFor;
+	}
+
+	public void setDeptFor(String deptFor) {
+		this.deptFor = deptFor;
+	}
+
+	public String getWarrantorWay() {
+		return warrantorWay;
+	}
+
+	public void setWarrantorWay(String warrantorWay) {
+		this.warrantorWay = warrantorWay;
 	}
 
 	public Integer getId() {

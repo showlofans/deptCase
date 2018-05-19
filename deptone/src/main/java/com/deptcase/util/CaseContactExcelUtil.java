@@ -22,27 +22,20 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
- * @description: 债务案件导入工具类
- * @projectName:deptone
- * @className:DeptCaseExcelUtil.java
+ * @description: 联系人导入工具类
+ * @projectName:casemgt
+ * @className:CaseContactExcelUtil.java
  * @author:微族通道代码设计人 宁强
- * @createTime:2018年5月11日 下午5:29:41
+ * @createTime:2018年5月19日 下午1:20:01
  * @version 1.0
  */
-public class DeptCaseExcelUtil {
-	public static final String RESOURCE_HEAD_CASE_CUSTOMER_AC = "客户名称";
-	public static final String RESOURCE_HEAD_DEPT_DATE_AC = "贷款日期";
-	public static final String RESOURCE_HEAD_DEPT_END_DATE_AC = "到期日期";
-	public static final String RESOURCE_HEAD_DEPT_AMOUNT_AC = "贷款金额";
-	public static final String RESOURCE_HEAD_DEPT_BALANCE_AC = "贷款余额";
-	public static final String RESOURCE_HEAD_DEPT_PROFIT_AC = "结欠利息";
-	public static final String RESOURCE_HEAD_DC_ID_AC = "证件号码";
-	public static final String RESOURCE_HEAD_CASE_ORG_AC = "机构名称";
-	public static final String RESOURCE_HEAD_CUSTOMER_CONTACT_AC = "联系电话";
-	public static final String RESOURCE_HEAD_CUSTOMER_LOCATION_AC = "地址";
-	public static final String RESOURCE_HEAD_CASE_WARRANTOR_AC = "保证人名称";
-	public static final String RESOURCE_HEAD_DEPT_FOR_AC = "贷款用途";
-	public static final String RESOURCE_HEAD_WARRANTOR_WAY_AC = "保证方式";
+public class CaseContactExcelUtil {
+	public static final String RESOURCE_HEAD_CONTACT_NAME_AC = "联系人";
+	public static final String RESOURCE_HEAD_CONTACT_DCID_AC = "证件号码";
+	public static final String RESOURCE_HEAD_HOUSEHOLD_SHIP_AC = "户籍关系";
+	public static final String RESOURCE_HEAD_HOUSEHOLD_LOCATION_AC = "户籍地址";
+	public static final String RESOURCE_HEAD_HOUSEHOLD_DCID_AC = "户主证件号码";
+	public static final String ROW_KEYWORD = "户主";
 
 	@SuppressWarnings("resource")
 	public static List<Map<String, String>> readExcel(File excel) 
@@ -116,7 +109,7 @@ public class DeptCaseExcelUtil {
 
 							for (Entry<Integer, String> e : m.entrySet())
 							{
-								if ("客户名称".equals(e.getValue().trim()) || "贷款金额".equals(e.getValue().trim()) || "证件号码".equals(e.getValue().trim()))
+								if ("证件号码".equals(e.getValue().trim()) || "户籍关系".equals(e.getValue().trim()))
 								{
 									headTag = true;
 									break;
@@ -148,17 +141,27 @@ public class DeptCaseExcelUtil {
 						{
 							row = sheet.getRow(i);
 							rows = new HashMap<String, String>(iColumns);
-
+							int keyWord = 0;
 							for (int iCol = 0; iCol < iColumns; iCol++)
 							{
 								if (m.containsKey(iCol) && row != null)
 								{
 									String cellValue = getCellValue(row.getCell(iCol));
+									cellValue = (cellValue).replace(" ", "");
+									String headM = m.get(iCol).trim();
 //									String cellValue = row.getCell(iCol).getStringCellValue();
-									rows.put(m.get(iCol).trim(), (cellValue).replace(" ", ""));
+									rows.put(headM, cellValue);
+									if(headM.equals(RESOURCE_HEAD_HOUSEHOLD_SHIP_AC) && ROW_KEYWORD.equals(cellValue)){
+										//把户籍关系的前一列必须是证件号码
+										rows.put(RESOURCE_HEAD_HOUSEHOLD_DCID_AC, getCellValue(row.getCell(iCol-1)));
+										keyWord++;//存在key
+									}
 								}
 							}
-							listMap.add(rows);
+							System.out.println("每行的内容："+rows);
+							if(keyWord > 0){
+								listMap.add(rows);
+							}
 						}
 					}
 				}

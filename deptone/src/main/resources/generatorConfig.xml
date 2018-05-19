@@ -38,10 +38,18 @@
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table> -->
-		<table tableName="contact_record" domainObjectName="ContactRecordPo"
+		<!-- <table tableName="contact_record" domainObjectName="ContactRecordPo"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false"></table>
+			selectByExampleQueryId="false"></table> -->
+		<!-- <table tableName="case_contact" domainObjectName="CaseContactPo"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table> -->
+			<table tableName="case_bind_contact" domainObjectName="CaseBindContactPo"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table> 
 
 	</context>
 </generatorConfiguration>

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.deptcase.casemgt.entity.CaseBindContactPo;
 import com.deptcase.casemgt.entity.DeptCasePo;
 
 @Repository(value="deptCaseDao")
@@ -66,5 +67,12 @@ public class DeptCaseDaoImpl implements DeptCaseDao {
 	public List<DeptCasePo> listCase(Map<String, Object> params) {
 		return sqlSessionTemplate.selectList("listCase", params);
 	}
+
+	@Override
+	public List<CaseBindContactPo> getBindingCase(Map<String, Object> params) {
+		return sqlSessionTemplate.selectList("getBindingCase", params);
+	}
+	
+	
 
 }

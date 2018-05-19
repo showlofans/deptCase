@@ -3,6 +3,7 @@ package com.deptcase.casemgt.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.deptcase.casemgt.entity.CaseBindContactPo;
 import com.deptcase.casemgt.entity.DeptCasePo;
 
 public interface DeptCaseDao {
@@ -43,4 +44,13 @@ public interface DeptCaseDao {
      * @createTime:2018年5月12日 下午3:23:10
      */
     List<DeptCasePo> listCase (Map<String,Object> params);
+    
+    /**
+     * @description: 获得待绑定的案件联系人绑定列表
+     * @param params
+     * @return
+     * @author:微族通道代码设计人 宁强
+     * @createTime:2018年5月19日 下午1:06:21
+     */
+    List<CaseBindContactPo> getBindingCase(Map<String,Object> params);
 }
