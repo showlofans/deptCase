@@ -10,21 +10,44 @@ Target Server Type    : MYSQL
 Target Server Version : 50626
 File Encoding         : 65001
 
-Date: 2018-05-18 16:50:01
+Date: 2018-05-19 17:46:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `case_bind_contact`
+-- ----------------------------
+DROP TABLE IF EXISTS `case_bind_contact`;
+CREATE TABLE `case_bind_contact` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `last_access` bigint(20) DEFAULT NULL COMMENT '最后更新时间',
+  `case_id` bigint(20) DEFAULT NULL COMMENT '案件id',
+  `contact_dcid` varchar(255) DEFAULT NULL COMMENT '联系人证件号码',
+  `bind_type` int(11) DEFAULT NULL COMMENT '绑定类型（0-案件关联人，1-添加联系人）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of case_bind_contact
+-- ----------------------------
+
 -- ----------------------------
 -- Table structure for `case_contact`
 -- ----------------------------
 DROP TABLE IF EXISTS `case_contact`;
 CREATE TABLE `case_contact` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '案件联系方式id',
-  `case_id` int(11) DEFAULT NULL COMMENT '案件id',
-  `case_admin` int(11) DEFAULT NULL COMMENT '案件负责人id',
-  `contact` varchar(255) DEFAULT NULL COMMENT '联系方式',
+  `contact_name` varchar(255) DEFAULT NULL COMMENT '联系方式',
+  `contact_dcid` varchar(255) DEFAULT NULL COMMENT '联系人身份证号',
+  `household_ship` varchar(255) DEFAULT NULL COMMENT '户籍关系',
+  `household_location` varchar(255) DEFAULT NULL COMMENT '户籍地址',
+  `other_contact_ship` varchar(255) DEFAULT NULL COMMENT '其他关系(称呼)',
+  `contact_number` varchar(255) DEFAULT NULL COMMENT '联系人号码',
+  `contact_location` varchar(255) DEFAULT NULL COMMENT '现在的联系地址',
+  `contact_remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
   `last_access` bigint(20) DEFAULT NULL COMMENT '联系方式添加时间',
   `contact_add_user` int(11) DEFAULT NULL COMMENT '添加人id',
+  `household_dcid` varchar(255) DEFAULT NULL COMMENT '户主证件号码',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
