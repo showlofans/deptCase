@@ -17,7 +17,6 @@ import com.deptcase.casemgt.entity.CaseBindContactPo;
 import com.deptcase.casemgt.entity.CaseContactPo;
 import com.deptcase.enums.BindTypeEnum;
 import com.deptcase.util.CaseContactExcelUtil;
-
 import com.deptcase.util.StringHelper;
 /**
  * @description: 案件联系人绑定
@@ -66,6 +65,13 @@ public class CaseContactAOImpl implements CaseContactAO {
 //				logger.info("第" + currentNum + "条商家ID不存在");
 				continue;
 			}
+//			caseContactDao
+			Map<String, Object> contactMap = new HashMap<String, Object>();
+			if(caseContactDao.countCCByParams(contactMap) > 0){
+				failNum++;
+//				logger.info("第" + currentNum + "条商家ID不存在");
+				continue;
+			}
 			dcIds.add(contactDcid);
 			String householdShip = row.get(CaseContactExcelUtil.RESOURCE_HEAD_HOUSEHOLD_SHIP_AC).trim();
 			if (StringHelper.isTrimEmpty(householdShip))
@@ -74,13 +80,13 @@ public class CaseContactAOImpl implements CaseContactAO {
 //				logger.info("第" + currentNum + "条商家ID不存在");
 				continue;
 			}
-			String householdLocation = row.get(CaseContactExcelUtil.RESOURCE_HEAD_HOUSEHOLD_LOCATION_AC).trim();
-			if (StringHelper.isTrimEmpty(householdLocation))
-			{
-				failNum++;
-//				logger.info("第" + currentNum + "条商家ID不存在");
-				continue;
-			}
+//			String householdLocation = row.get(CaseContactExcelUtil.RESOURCE_HEAD_HOUSEHOLD_LOCATION_AC).trim();
+//			if (StringHelper.isTrimEmpty(householdLocation))
+//			{
+//				failNum++;
+////				logger.info("第" + currentNum + "条商家ID不存在");
+//				continue;
+//			}
 			String householdDcid = row.get(CaseContactExcelUtil.RESOURCE_HEAD_HOUSEHOLD_DCID_AC).trim();
 			if (StringHelper.isTrimEmpty(householdDcid))
 			{
@@ -88,7 +94,7 @@ public class CaseContactAOImpl implements CaseContactAO {
 //				logger.info("第" + currentNum + "条商家ID不存在");
 				continue;
 			}
-			CaseContactPo caseContactPo = new CaseContactPo(contactName, contactDcid, householdShip, householdLocation, now, userId, householdDcid);
+			CaseContactPo caseContactPo = new CaseContactPo(contactName, contactDcid, householdShip, "", now, userId, householdDcid);
 			contactList.add(caseContactPo);
 		}
 		if(contactList.size() > 0){
@@ -97,11 +103,14 @@ public class CaseContactAOImpl implements CaseContactAO {
 //			successNum = contactListRes;
 		}
 		Map<String, Object> bindingMap = new HashMap<String, Object>();
-		
+		bindingMap.put("dcIds", dcIds);
 		List<CaseBindContactPo> cbcList = deptCaseDao.getBindingCase(bindingMap);
+//		List<CaseBindContactPo> cbcList = new LinkedList<CaseBindContactPo>();
 		for (CaseBindContactPo caseBindContactPo : cbcList) {
-			caseBindContactPo.setBindType(BindTypeEnum.CASE_BIND.getValue());
-			caseBindContactPo.setLastAccess(now);
+			if(caseBindContactPo.getCaseId() != null && StringHelper.isNotEmpty(caseBindContactPo.getContactDcid())){
+				caseBindContactPo.setBindType(BindTypeEnum.CASE_BIND.getValue());
+				caseBindContactPo.setLastAccess(now);
+			}
 		}
 		long cbcNum = caseBindContactDao.batchAddCBCList(cbcList);
 		System.out.println("批量导入了"+cbcNum+"个案件绑定");
@@ -112,10 +121,6 @@ public class CaseContactAOImpl implements CaseContactAO {
 	@Override
 	public long batchAddCaseContactList(List<CaseContactPo> list) {
 		long res = caseContactDao.batchAddCaseContactList(list);
-//		for (CaseContactPo caseContactPo : list) {
-//			
-//		}
-		//先全部添加进去再，删除多余的联系人
 		return res;
 	}
 

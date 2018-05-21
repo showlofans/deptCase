@@ -1,6 +1,8 @@
 package com.deptcase.casemgt.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -62,5 +64,17 @@ public class CaseContactDaoImpl implements CaseContactDao {
 	public long batchAddCaseContactList(List<CaseContactPo> list) {
 		return sqlSessionTemplate.insert("batchAddCaseContactList", list);
 	}
+
+	@Override
+	public long countCCByParams(Map<String, Object> params) {
+		return sqlSessionTemplate.selectOne("countCCByParams", params);
+	}
+
+//	@Override
+//	public List<String> getDoubleIds(List<String> dcids) {
+//		Map<String, Object> params = new HashMap<String, Object>();
+//		params.put("contactDcids", dcids);
+//		return sqlSessionTemplate.selectList("getDoubleIds", params);
+//	}
 
 }

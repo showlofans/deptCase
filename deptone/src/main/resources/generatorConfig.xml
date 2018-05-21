@@ -46,7 +46,11 @@
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table> -->
-			<table tableName="case_bind_contact" domainObjectName="CaseBindContactPo"
+			<!-- <table tableName="case_bind_contact" domainObjectName="CaseBindContactPo"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>  -->
+			<table tableName="login_user" domainObjectName="LoginUserPo"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table> 

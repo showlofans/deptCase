@@ -33,9 +33,10 @@ public class CaseContactExcelUtil {
 	public static final String RESOURCE_HEAD_CONTACT_NAME_AC = "联系人";
 	public static final String RESOURCE_HEAD_CONTACT_DCID_AC = "证件号码";
 	public static final String RESOURCE_HEAD_HOUSEHOLD_SHIP_AC = "户籍关系";
-	public static final String RESOURCE_HEAD_HOUSEHOLD_LOCATION_AC = "户籍地址";
+//	public static final String RESOURCE_HEAD_HOUSEHOLD_LOCATION_AC = "户籍地址";
 	public static final String RESOURCE_HEAD_HOUSEHOLD_DCID_AC = "户主证件号码";
 	public static final String ROW_KEYWORD = "户主";
+	public static final int BASE_COLUMN_NUM = 3;//基本信息占多少列
 
 	@SuppressWarnings("resource")
 	public static List<Map<String, String>> readExcel(File excel) 
@@ -97,6 +98,9 @@ public class CaseContactExcelUtil {
 									String h = cv.replace("\r", "").replace("\n", "");
 									if (!StringHelper.isEmpty(h.trim()))
 									{
+										if(h.contains(RESOURCE_HEAD_CONTACT_NAME_AC)){
+											h = RESOURCE_HEAD_CONTACT_NAME_AC;
+										}
 										m.put(iCol, h);
 									}
 								}
@@ -135,31 +139,41 @@ public class CaseContactExcelUtil {
 						{
 							listMap = new ArrayList<Map<String, String>>();
 						}
-
 						// 获取数据
 						for (int i = iRow + 1; i < iRowCount; i++)
 						{
+							String houseHoldDcid = null;
 							row = sheet.getRow(i);
-							rows = new HashMap<String, String>(iColumns);
-							int keyWord = 0;
-							for (int iCol = 0; iCol < iColumns; iCol++)
-							{
-								if (m.containsKey(iCol) && row != null)
-								{
-									String cellValue = getCellValue(row.getCell(iCol));
-									cellValue = (cellValue).replace(" ", "");
-									String headM = m.get(iCol).trim();
-//									String cellValue = row.getCell(iCol).getStringCellValue();
-									rows.put(headM, cellValue);
-									if(headM.equals(RESOURCE_HEAD_HOUSEHOLD_SHIP_AC) && ROW_KEYWORD.equals(cellValue)){
-										//把户籍关系的前一列必须是证件号码
-										rows.put(RESOURCE_HEAD_HOUSEHOLD_DCID_AC, getCellValue(row.getCell(iCol-1)));
-										keyWord++;//存在key
-									}
+							for (int iCol = 0; iCol < iColumns; iCol++){
+								String cellValue = getCellValue(row.getCell(iCol));
+								cellValue = (cellValue).replace(" ", "");
+								String headM = m.get(iCol).trim();
+								if(headM.equals(RESOURCE_HEAD_HOUSEHOLD_SHIP_AC) && ROW_KEYWORD.equals(cellValue)){
+									houseHoldDcid = getCellValue(row.getCell(iCol-1));
+									break;
+									//把户籍关系的前一个表头必须是证件号码
 								}
 							}
-							System.out.println("每行的内容："+rows);
-							if(keyWord > 0){
+							if(houseHoldDcid == null){
+								continue;
+							}
+							int num = iColumns / BASE_COLUMN_NUM;//整除得到rowMap数量
+							for (int k = 0; k < num; k++) {
+								rows = new HashMap<String, String>(BASE_COLUMN_NUM);
+								for (int t = 0; t < num; t++)
+								{
+									int iCol = BASE_COLUMN_NUM * k + t;
+									
+									if (m.containsKey(iCol) && row != null)
+									{
+										String cellValue = getCellValue(row.getCell(iCol));
+										cellValue = (cellValue).replace(" ", "");
+										String headM = m.get(iCol).trim();
+										rows.put(headM, cellValue);
+									}
+								}
+								rows.put(RESOURCE_HEAD_HOUSEHOLD_DCID_AC, houseHoldDcid);//最后加上户主id
+//								System.out.println("每行的内容："+rows);
 								listMap.add(rows);
 							}
 						}

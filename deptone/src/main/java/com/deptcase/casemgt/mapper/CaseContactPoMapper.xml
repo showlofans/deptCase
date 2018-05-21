@@ -35,10 +35,56 @@
   		(#{caseContact.contactName},#{caseContact.contactDcid},#{caseContact.householdShip},
   		#{caseContact.householdLocation},#{caseContact.otherContactShip},
   		#{caseContact.contactNumber},#{caseContact.contactLocation},#{caseContact.contactRemark},
-  		#{caseContact.customerLocation},#{caseContact.lastAccess},#{caseContact.contactAddUser},
-  		#{caseContact.householdDcid})
+  		#{caseContact.lastAccess},#{caseContact.contactAddUser},#{caseContact.householdDcid})
   	</foreach>
   </insert>
+  <select id="countCCByParams" parameterType="map" resultType="long">
+  	 select count(*)
+    from <include refid="t_contact"></include>
+    <where>
+    	<include refid="condition_sql"></include>
+    </where>
+  </select>
+  <sql id="condition_sql">
+  	 <if test="contactName != null" >
+        and contact_name = #{contactName,jdbcType=VARCHAR}
+      </if>
+      <if test="contactDcid != null" >
+        and contact_dcid = #{contactDcid,jdbcType=VARCHAR},
+      </if>
+      <if test="householdShip != null" >
+        and household_ship = #{householdShip,jdbcType=VARCHAR},
+      </if>
+      <if test="householdLocation != null" >
+        and household_location = #{householdLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="otherContactShip != null" >
+        and other_contact_ship = #{otherContactShip,jdbcType=VARCHAR},
+      </if>
+      <if test="contactNumber != null" >
+        and contact_number = #{contactNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="contactLocation != null" >
+        and contact_location = #{contactLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="contactRemark != null" >
+        and contact_remark = #{contactRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="lastAccess != null" >
+        and last_access = #{lastAccess,jdbcType=BIGINT},
+      </if>
+      <if test="contactAddUser != null" >
+        and contact_add_user = #{contactAddUser,jdbcType=INTEGER},
+      </if>
+  </sql>
+  <!-- <select id="getDoubleIds" parameterType="map" resultType="string">
+  	select contact_dcid from <include refid="t_contact"></include> 
+  	 <where>
+  		<if test="contactDcids != null">
+	  		AND contact_dcid in <foreach item="contactDcid" index="index" collection="contactDcids" open="(" separator="," close=")">#{contactDcid}</foreach>
+  		</if>
+  	 </where>
+  </select> -->
   
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >

@@ -43,6 +43,16 @@
 			<button type="button" id="saveButton" class="btn btn-primary radius" onclick="importCase()"> 导入案件</button>
 		</div>
 		</form>
+		<form class="form form-horizontal" name="form-import-contact" action="?"  id="form-import-contact" enctype="multipart/form-data">
+		<div class="formControls col-xs-8 col-sm-9">
+			<span class="btn-upload">
+			  <a href="javascript:void();" class="btn btn-primary radius"><i class="iconfont">&#xf0020;</i> 选择文件</a>
+			  <input value="" class="input-text upload-url" style="width:300px" type="text" readonly >
+			  <input type="file" multiple name="contactFile" class="input-file">
+			</span>
+			<button type="button" id="saveButton" class="btn btn-primary radius" onclick="importContact()"> 导入联系人</button>
+		</div>
+		</form>
 	<form action="/flowsys/deptCase/list_deptcase.do" method="post" id="formD" name="dataListForm">
 		<!-- <button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button> -->
 		<%-- 平台名称：<input type="text" value="${resultMap.searchParam.epName }" name="epName" id="epName" placeholder=" 平台名称" style="width:150px" class="input-text">
@@ -242,6 +252,31 @@ function importCase(){
          } 
      });
 	// $('#form-import').submit();
+ }
+ /**导入联系人*/
+ function importContact(){
+	 $.ajax({
+         url : "/casemgt/caseContact/import_case_contact.do",
+         type : "POST",
+         cache: true, 
+         data : new FormData($('#form-import-contact')[0]),
+         processData: false,
+         contentType : false,
+         success : function(data) {
+        	 //alert(data);
+        	//$('#telList').val(data);
+        	if("success" == data){
+            //alert(data);  
+        		location.reload();
+           	}else{
+           		alert(data);
+           	}
+         },
+
+         error : function(data) {
+             alert("出错：" + data.code);
+         } 
+     });
  }
 </script> 
 </body>

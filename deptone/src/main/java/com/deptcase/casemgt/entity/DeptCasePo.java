@@ -49,6 +49,8 @@ public class DeptCasePo {
     
     private String warrantorWay;			//保证方式
     
+    private String loanNumber;				//借据号
+    
     //
     private List<String> contactIds;			//联系人身份证号列表（参数）
 
@@ -57,6 +59,21 @@ public class DeptCasePo {
 		super();
 	}
 
+	/** 导入的案件实体
+	 * @param deptAmount
+	 * @param deptBalance
+	 * @param deptProfit
+	 * @param dcId
+	 * @param caseOrg
+	 * @param customerContact
+	 * @param customerLocation
+	 * @param caseWarrantor
+	 * @param caseCustomer
+	 * @param caseAdmin
+	 * @param accessLog
+	 * @param deptFor
+	 * @param warrantorWay
+	 */
 	public DeptCasePo(Double deptAmount, Double deptBalance, Double deptProfit,
 			String dcId, String caseOrg, String customerContact,
 			String customerLocation, String caseWarrantor, String caseCustomer,
@@ -77,6 +94,14 @@ public class DeptCasePo {
 		this.warrantorWay=warrantorWay;
 	}
 	
+	public String getLoanNumber() {
+		return loanNumber;
+	}
+
+	public void setLoanNumber(String loanNumber) {
+		this.loanNumber = loanNumber;
+	}
+
 	public List<String> getContactIds() {
 		return contactIds;
 	}

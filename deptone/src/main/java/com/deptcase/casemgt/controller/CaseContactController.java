@@ -44,28 +44,28 @@ public class CaseContactController {
 	private CaseContactAO caseContactAO;
 	
 	/**
-	 * @description: 导入案件列表 
+	 * @description:
 	 * @param pageNo
 	 * @param deptCasePo
 	 * @param request
 	 * @return
 	 * @author:微族通道代码设计人 宁强
-	 * @createTime:2018年5月12日 上午11:30:10
+	 * @createTime:2018年5月21日 下午3:30:35
 	 */
-	@RequestMapping(value=CaseContactUrl.LIST_CASE_CONTACT)
-	public ModelAndView listCase(@RequestParam(value = "pageNo", required = false)String pageNo, DeptCasePo deptCasePo ,
-			HttpServletRequest request){
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		PageParam pageParam = null;
-		if(StringHelper.isNotEmpty(pageNo)){
-			pageParam = new PageParam(Integer.parseInt(pageNo), 10);
-		}else{
-			pageParam = new PageParam(1, 10);
-		}
-//		Pagination<DeptCasePo> pagination = deptCaseAO.listCase(deptCasePo, pageParam);
-//		resultMap.put("pagination", pagination);
-		return new ModelAndView("/deptcase/deptcase_list", "resultMap", resultMap);
-	}
+//	@RequestMapping(value=CaseContactUrl.LIST_CASE_CONTACT)
+//	public ModelAndView listCaseContact(@RequestParam(value = "pageNo", required = false)String pageNo, DeptCasePo deptCasePo ,
+//			HttpServletRequest request){
+//		Map<String, Object> resultMap = new HashMap<String, Object>();
+//		PageParam pageParam = null;
+//		if(StringHelper.isNotEmpty(pageNo)){
+//			pageParam = new PageParam(Integer.parseInt(pageNo), 10);
+//		}else{
+//			pageParam = new PageParam(1, 10);
+//		}
+////		Pagination<DeptCasePo> pagination = deptCaseAO.listCase(deptCasePo, pageParam);
+////		resultMap.put("pagination", pagination);
+//		return new ModelAndView("/deptcase/deptcase_list", "resultMap", resultMap);
+//	}
 	
 
 	/**
@@ -78,24 +78,24 @@ public class CaseContactController {
 	 */
 	@RequestMapping(value = CaseContactUrl.IMPORT_CASE_CONTACT, method = RequestMethod.POST)
 	@ResponseBody
-	public void importCaseContactExcelBatch(HttpServletRequest request, MultipartFile uploadFile,HttpServletResponse response)
+	public void importCaseContactExcelBatch(HttpServletRequest request, MultipartFile contactFile,HttpServletResponse response)
 	{
 //		AgencyBackwardVO agencyVO = (AgencyBackwardVO)request.getSession().getAttribute("loginContext");
 		String returnMessage = "error";
 		try
 		{
-			if (uploadFile != null && !uploadFile.isEmpty())
+			if (contactFile != null && !contactFile.isEmpty())
 			{
-				long size = uploadFile.getSize();
+				long size = contactFile.getSize();
 				byte[] data = new byte[(int) size];
-				InputStream input = uploadFile.getInputStream();
+				InputStream input = contactFile.getInputStream();
 				input.read(data);
 				File folder = new File(request.getServletContext().getRealPath("/") + "caseContact/");
 				if (!folder.exists())
 				{
 					folder.mkdir();
 				}
-				String uploadFileName = uploadFile.getOriginalFilename();
+				String uploadFileName = contactFile.getOriginalFilename();
 				String nowTime = DateUtil.formatPramm(System.currentTimeMillis(), "yyyyMMddHHmmss");
 				String ExName = uploadFileName.substring(uploadFileName.lastIndexOf("."), uploadFileName.length());
 				File outFile = new File(request.getServletContext().getRealPath("/") + "caseContact/" + "useranme-"+nowTime + ExName);

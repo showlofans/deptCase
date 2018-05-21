@@ -46,13 +46,13 @@
 				<form name="detailForm" method="post">
 					<table  border="0" class="table table-border table-bordered table-bg table-hover table-sort">
 						<tr align="center">
-							<th align="center">对账类型</th>
-							<th align="center">代扣帐户</th>
-							<th align="center">总笔数</th>
-							<th align="center">总借方金额</th>
-							<th align="center">总贷方金额</th>
-							<th align="center">资金到账日期</th>
-							<th align="center">状态</th>
+							<th align="center">联系人名字</th>
+							<th align="center">联系人身份证号</th>
+							<th align="center">手机号码</th>
+							<th align="center">户籍关系</th>
+							<th align="center">户籍地址</th>
+							<th align="center">其他关系</th>
+							<th align="center">现居地址</th>
 							<th align="center">摘要</th>
 							<th align="center">操作</th>
 						</tr>
