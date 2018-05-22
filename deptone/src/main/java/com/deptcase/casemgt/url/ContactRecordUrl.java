@@ -20,6 +20,13 @@ public class ContactRecordUrl extends BaseURL{
 	 * <br>/casemgt/contactRecord/list_record
 	 */
 	public static final String LIST_RECORD = "/list_record" + DYNAMIC_WEB_SUFFIX;
+	/**
+	 * 添加联系人
+	 * <br>/casemgt/contactRecord/add_contact
+	 */
+	public static final String ADD_CONTACT = "/add_contact" + DYNAMIC_WEB_SUFFIX;
+	
+	
 	
 	
 }

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.deptcase.casemgt.dao.LoginUserDao;
 import com.deptcase.casemgt.entity.LoginUserPo;
+import com.deptcase.enums.UserLimitEnum;
+import com.deptcase.util.DateUtil;
 import com.deptcase.util.PageParam;
 import com.deptcase.util.Pagination;
 import com.deptcase.util.StringHelper;
@@ -35,7 +37,10 @@ public class LoginUserAOImpl implements LoginUserAO {
 		if(userCount > 0){
 			msg = "用户名已存在";
 		}else{
-			int intRes = loginUserDao.insert(loginUserPo);
+			//默认添加的用户是一般权限用户
+			loginUserPo.setUserLimit(UserLimitEnum.ORDINARY_LIMIT.getValue());
+			loginUserPo.setCreateTime(System.currentTimeMillis());
+			int intRes = loginUserDao.addUser(loginUserPo);
 			if(intRes > 0){
 				msg="success";
 			}
@@ -93,7 +98,9 @@ public class LoginUserAOImpl implements LoginUserAO {
 			paramsMap.put("end", pageSize);
 		}
 		List<LoginUserPo> userList = loginUserDao.listUserByParams(paramsMap);
-		
+		for (LoginUserPo loginUserPo2 : userList) {
+			loginUserPo2.setCreateTimeStr(DateUtil.format(loginUserPo2.getCreateTime()));
+		}
 		return new Pagination<LoginUserPo>(userList, totalRecord, pageNo, pageSize);
 	}
 

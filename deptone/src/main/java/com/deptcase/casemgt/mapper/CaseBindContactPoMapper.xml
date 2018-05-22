@@ -37,10 +37,11 @@
     delete from case_bind_contact
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.deptcase.casemgt.entity.CaseBindContactPo" >
-    insert into case_bind_contact (id, last_access, case_id, 
+  <!-- 添加案件绑定 -->
+  <insert id="addCBC" parameterType="com.deptcase.casemgt.entity.CaseBindContactPo" >
+    insert into case_bind_contact (last_access, case_id, 
       contact_dcid, bind_type)
-    values (#{id,jdbcType=BIGINT}, #{lastAccess,jdbcType=BIGINT}, #{caseId,jdbcType=BIGINT}, 
+    values ( #{lastAccess,jdbcType=BIGINT}, #{caseId,jdbcType=BIGINT}, 
       #{contactDcid,jdbcType=VARCHAR}, #{bindType,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.deptcase.casemgt.entity.CaseBindContactPo" >

@@ -9,13 +9,17 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.deptcase.casemgt.dao.CaseBindContactDao;
 import com.deptcase.casemgt.dao.CaseContactDao;
 import com.deptcase.casemgt.dao.DeptCaseDao;
 import com.deptcase.casemgt.entity.CaseBindContactPo;
 import com.deptcase.casemgt.entity.CaseContactPo;
+import com.deptcase.casemgt.entity.CaseContactVO;
+import com.deptcase.casemgt.entity.LoginUserPo;
 import com.deptcase.enums.BindTypeEnum;
+import com.deptcase.enums.UserLimitEnum;
 import com.deptcase.util.CaseContactExcelUtil;
 import com.deptcase.util.StringHelper;
 /**
@@ -67,6 +71,7 @@ public class CaseContactAOImpl implements CaseContactAO {
 			}
 //			caseContactDao
 			Map<String, Object> contactMap = new HashMap<String, Object>();
+			contactMap.put("contactDcid", contactDcid);
 			if(caseContactDao.countCCByParams(contactMap) > 0){
 				failNum++;
 //				logger.info("第" + currentNum + "条商家ID不存在");
@@ -121,6 +126,72 @@ public class CaseContactAOImpl implements CaseContactAO {
 	@Override
 	public long batchAddCaseContactList(List<CaseContactPo> list) {
 		long res = caseContactDao.batchAddCaseContactList(list);
+		return res;
+	}
+
+	@Transactional
+	@Override
+	public String addContact(CaseContactVO caseContactVO) {
+		long now = System.currentTimeMillis();
+		String res = "error";
+		if(caseContactVO.getCaseId() != null && StringHelper.isNotEmpty(caseContactVO.getContactNumber()) && caseContactVO.getContactAddUser() != null){
+			String contactDcid = caseContactVO.getContactDcid();
+			CaseContactPo caseContactPo = new CaseContactPo(caseContactVO.getContactName(), contactDcid, 
+					caseContactVO.getHouseholdShip(), caseContactVO.getHouseholdLocation(), now, caseContactVO.getContactAddUser(), caseContactVO.getHouseholdDcid());
+			Map<String, Object> contactMap = new HashMap<String, Object>();
+			contactMap.put("contactDcid", contactDcid);
+			int caseRes = 0, cbcRes = 0;
+			if(StringHelper.isNotEmpty(contactDcid) && caseContactDao.countCCByParams(contactMap) > 0){
+				LoginUserPo loginUserPo = new LoginUserPo();
+				loginUserPo.setId(caseContactVO.getContactAddUser());
+				LoginUserPo getUserPo = loginUserAO.getOneUser(loginUserPo);
+				//当前登录用户不是超管
+				if(getUserPo == null || UserLimitEnum.SUPPPER_LIMIT.getValue() != getUserPo.getUserLimit()){
+					caseContactPo = new CaseContactPo(caseContactVO.getContactName(), caseContactVO.getOtherContactShip(), caseContactVO.getContactNumber(), caseContactVO.getContactLocation()	, caseContactVO.getContactRemark());
+				}
+				//证件号码出现重复:按照证件号码，修改联系人其他信息，并完成联系人和案件的绑定
+				caseRes = caseContactDao.updateContactByPo(caseContactPo);
+//				return "exist";//证件号码出现重复
+			}else{
+				caseRes = caseContactDao.addContact(caseContactPo);
+			}
+			long caseId = caseContactVO.getCaseId();
+			CaseBindContactPo cbcPo = new CaseBindContactPo(now, caseId, contactDcid, BindTypeEnum.OTHER_BIND.getValue());
+			cbcRes = caseBindContactDao.addCBC(cbcPo);
+			if(caseRes > 0 || cbcRes > 0){
+				res = "success";
+			}
+		}
+		return res;
+	}
+//	private CaseContactPo getPoByVO(CaseContactVO caseContactVO){
+//		CaseContactPo caseContactPo = new CaseContactPo(caseContactVO.getContactName(), caseContactVO.getContactDcid(), caseContactVO.getHouseholdShip(), caseContactVO.getHouseholdLocation(), caseContactVO.getLastAccess(), caseContactVO.getContactAddUser(), caseContactVO.getHouseholdDcid());
+//	}
+	@Resource
+	private LoginUserAO loginUserAO;
+	@Override
+	public String editContact(CaseContactVO caseContactVO) {
+		String res = "error";
+		//联系人id不能为空，联系号码不能为空，当前登录用户id不能为空
+		if(caseContactVO.getId() != null && StringHelper.isNotEmpty(caseContactVO.getContactNumber()) && caseContactVO.getContactAddUser() != null){
+			LoginUserPo loginUserPo = new LoginUserPo();
+			loginUserPo.setId(caseContactVO.getContactAddUser());
+			LoginUserPo getUserPo = loginUserAO.getOneUser(loginUserPo);
+			CaseContactPo caseContactPo = null;
+			long now = System.currentTimeMillis();
+			//当前登录用户为超管
+			if(getUserPo != null && UserLimitEnum.SUPPPER_LIMIT.getValue() == getUserPo.getUserLimit()){
+				caseContactPo = new CaseContactPo(caseContactVO.getContactName(), caseContactVO.getContactDcid(), 
+						caseContactVO.getHouseholdShip(), caseContactVO.getHouseholdLocation(), now, caseContactVO.getContactAddUser(), caseContactVO.getHouseholdDcid());
+			}else{
+				//证件号码出现重复:按照证件号码，修改联系人其他信息，并完成联系人和案件的绑定
+				caseContactPo = new CaseContactPo(caseContactVO.getContactName(), caseContactVO.getOtherContactShip(), caseContactVO.getContactNumber(), caseContactVO.getContactLocation()	, caseContactVO.getContactRemark());
+			}
+			int caseRes = caseContactDao.updateContactByPo(caseContactPo);
+			if(caseRes > 0){
+				res = "success";
+			}
+		}
 		return res;
 	}
 

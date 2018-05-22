@@ -31,6 +31,11 @@ public class LoginUserUrl extends BaseURL {
 	 */
 	public static final String USER_ADD = "/user_add" + DYNAMIC_WEB_SUFFIX;
 	/**
+	 * 用户添加
+	 * <br>/casemgt/userLogin/user_add_page
+	 */
+	public static final String USER_ADD_PAGE = "/user_add_page" + DYNAMIC_WEB_SUFFIX;
+	/**
 	 * 用户编辑
 	 * <br>/casemgt/userLogin/user_edit
 	 */

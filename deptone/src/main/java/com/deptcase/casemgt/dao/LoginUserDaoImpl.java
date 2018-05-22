@@ -23,7 +23,7 @@ public class LoginUserDaoImpl implements LoginUserDao {
 	}
 
 	@Override
-	public int insert(LoginUserPo record) {
+	public int addUser(LoginUserPo record) {
 		return sqlSessionTemplate.insert("addUser", record);
 	}
 
@@ -69,6 +69,11 @@ public class LoginUserDaoImpl implements LoginUserDao {
 	@Override
 	public int editUser(LoginUserPo loginUserPo) {
 		return sqlSessionTemplate.update("editUser", loginUserPo);
+	}
+
+	@Override
+	public int addUserKey(LoginUserPo record) {
+		return sqlSessionTemplate.insert("addUserKey", record);
 	}
 
 }

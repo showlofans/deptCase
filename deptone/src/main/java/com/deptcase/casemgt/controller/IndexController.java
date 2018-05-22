@@ -1,10 +1,12 @@
 package com.deptcase.casemgt.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.deptcase.casemgt.entity.LoginUserPo;
 import com.deptcase.casemgt.url.DeptCaseUrl;
 
 @Controller
@@ -20,10 +22,10 @@ public class IndexController {
 	@RequestMapping(value=DeptCaseUrl.INDEX)
 	public String goIndex(HttpServletRequest request) {
 //		HttpSession session = request.getSession();
-//		AgencyBackwardVO agencyVo = (AgencyBackwardVO)request.getSession().getAttribute("loginContext");
-//		if(agencyVo == null){
-//			return "/agency/login_page";
-//		}
+		LoginUserPo loginUserPo = (LoginUserPo)request.getSession().getAttribute("loginContext");
+		if(loginUserPo == null){
+			return "/userLogin/login_page";
+		}
 //		
 //		//设置session中的总余额
 //		//超管登陆的时候，默认如果没有对公账户，就给他创建一个对公账户

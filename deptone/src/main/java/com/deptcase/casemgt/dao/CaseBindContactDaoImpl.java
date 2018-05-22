@@ -30,9 +30,8 @@ public class CaseBindContactDaoImpl implements CaseBindContactDao {
 	}
 
 	@Override
-	public int insert(CaseBindContactPo record) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addCBC(CaseBindContactPo record) {
+		return sqlSessionTemplate.insert("addCBC", record);
 	}
 
 	@Override

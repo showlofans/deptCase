@@ -47,34 +47,34 @@
   </select>
   <sql id="condition_sql">
   	 <if test="contactName != null" >
-        and contact_name = #{contactName,jdbcType=VARCHAR}
+        and contact_name = #{contactName}
       </if>
       <if test="contactDcid != null" >
-        and contact_dcid = #{contactDcid,jdbcType=VARCHAR},
+        and contact_dcid = #{contactDcid}
       </if>
       <if test="householdShip != null" >
-        and household_ship = #{householdShip,jdbcType=VARCHAR},
+        and household_ship = #{householdShip}
       </if>
       <if test="householdLocation != null" >
-        and household_location = #{householdLocation,jdbcType=VARCHAR},
+        and household_location = #{householdLocation}
       </if>
       <if test="otherContactShip != null" >
-        and other_contact_ship = #{otherContactShip,jdbcType=VARCHAR},
+        and other_contact_ship = #{otherContactShip}
       </if>
       <if test="contactNumber != null" >
-        and contact_number = #{contactNumber,jdbcType=VARCHAR},
+        and contact_number = #{contactNumber}
       </if>
       <if test="contactLocation != null" >
-        and contact_location = #{contactLocation,jdbcType=VARCHAR},
+        and contact_location = #{contactLocation}
       </if>
       <if test="contactRemark != null" >
-        and contact_remark = #{contactRemark,jdbcType=VARCHAR},
+        and contact_remark = #{contactRemark}
       </if>
       <if test="lastAccess != null" >
-        and last_access = #{lastAccess,jdbcType=BIGINT},
+        and last_access = #{lastAccess}
       </if>
       <if test="contactAddUser != null" >
-        and contact_add_user = #{contactAddUser,jdbcType=INTEGER},
+        and contact_add_user = #{contactAddUser}
       </if>
   </sql>
   <!-- <select id="getDoubleIds" parameterType="map" resultType="string">
@@ -97,12 +97,12 @@
     delete from case_contact
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.deptcase.casemgt.entity.CaseContactPo" >
-    insert into case_contact (id, contact_name, contact_dcid, 
+  <insert id="addContact" parameterType="com.deptcase.casemgt.entity.CaseContactPo" >
+    insert into case_contact (contact_name, contact_dcid, 
       household_ship, household_location, other_contact_ship, 
       contact_number, contact_location, contact_remark, 
       last_access, contact_add_user)
-    values (#{id,jdbcType=BIGINT}, #{contactName,jdbcType=VARCHAR}, #{contactDcid,jdbcType=VARCHAR}, 
+    values ( #{contactName,jdbcType=VARCHAR}, #{contactDcid,jdbcType=VARCHAR}, 
       #{householdShip,jdbcType=VARCHAR}, #{householdLocation,jdbcType=VARCHAR}, #{otherContactShip,jdbcType=VARCHAR}, 
       #{contactNumber,jdbcType=VARCHAR}, #{contactLocation,jdbcType=VARCHAR}, #{contactRemark,jdbcType=VARCHAR}, 
       #{lastAccess,jdbcType=BIGINT}, #{contactAddUser,jdbcType=INTEGER})
@@ -180,8 +180,9 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.deptcase.casemgt.entity.CaseContactPo" >
-    update case_contact
+  <!-- 更新联系人信息 -->
+  <update id="updateContactByPo" parameterType="com.deptcase.casemgt.entity.CaseContactPo" >
+    update <include refid="t_contact"></include>
     <set >
       <if test="contactName != null" >
         contact_name = #{contactName,jdbcType=VARCHAR},
@@ -214,7 +215,14 @@
         contact_add_user = #{contactAddUser,jdbcType=INTEGER},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    <where>
+    	<if test="id != null">
+    		AND id = #{id,jdbcType=BIGINT}
+    	</if>
+    	<if test="contactDcid != null">
+    		AND contact_dcid = #{contactDcid}
+    	</if>
+    </where>
   </update>
   <update id="updateByPrimaryKey" parameterType="com.deptcase.casemgt.entity.CaseContactPo" >
     update case_contact

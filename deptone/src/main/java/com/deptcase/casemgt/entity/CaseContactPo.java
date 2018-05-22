@@ -57,6 +57,25 @@ public class CaseContactPo {
 		this.householdDcid=householdDcid;
 	}
 
+	/** 可编辑联系人实体
+	 * @param contactName
+	 * @param otherContactShip
+	 * @param contactNumber
+	 * @param contactLocation
+	 * @param contactRemark
+	 */
+	public CaseContactPo(String contactName,String otherContactShip, String contactNumber,
+			String contactLocation, String contactRemark) {
+		super();
+		this.contactName = contactName;
+		this.otherContactShip = otherContactShip;
+		this.contactNumber = contactNumber;
+		this.contactLocation = contactLocation;
+		this.contactRemark = contactRemark;
+	}
+
+
+
 	public String getHouseholdDcid() {
 		return householdDcid;
 	}

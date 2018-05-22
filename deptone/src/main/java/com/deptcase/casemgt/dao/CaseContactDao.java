@@ -10,7 +10,7 @@ import com.deptcase.casemgt.entity.CaseContactPo;
 public interface CaseContactDao {
     int deleteByPrimaryKey(Long id);
 
-    int insert(CaseContactPo record);
+    int addContact(CaseContactPo record);
 
     int insertSelective(CaseContactPo record);
 
@@ -46,4 +46,13 @@ public interface CaseContactDao {
      * @createTime:2018年5月21日 下午5:54:50
      */
     long countCCByParams(Map<String, Object> params);
+    
+    /**
+     * @description: 更新联系人信息
+     * @param caseContactPo
+     * @return
+     * @author:微族通道代码设计人 宁强
+     * @createTime:2018年5月22日 下午3:52:48
+     */
+    int updateContactByPo(CaseContactPo caseContactPo);
 }

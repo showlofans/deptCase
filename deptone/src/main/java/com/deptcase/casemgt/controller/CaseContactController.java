@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.deptcase.casemgt.ao.CaseContactAO;
 import com.deptcase.casemgt.ao.DeptCaseAO;
+import com.deptcase.casemgt.entity.CaseContactVO;
 import com.deptcase.casemgt.entity.DeptCasePo;
 import com.deptcase.casemgt.url.CaseContactUrl;
 import com.deptcase.util.DateUtil;
@@ -129,4 +130,18 @@ public class CaseContactController {
 		}
 	}
 	
+	/**
+	 * @description: 修改联系人信息
+	 * @param caseContactVO
+	 * @param request
+	 * @return
+	 * @author:微族通道代码设计人 宁强
+	 * @createTime:2018年5月22日 下午4:38:27
+	 */
+	@ResponseBody
+	@RequestMapping(value=CaseContactUrl.EDIT_CONTACT)
+	public String editContact(CaseContactVO caseContactVO,HttpServletRequest request){
+		String res = caseContactAO.editContact(caseContactVO);
+		return res;
+	}
 }

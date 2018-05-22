@@ -31,9 +31,8 @@ public class CaseContactDaoImpl implements CaseContactDao {
 	}
 
 	@Override
-	public int insert(CaseContactPo record) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addContact(CaseContactPo record) {
+		return sqlSessionTemplate.insert("addContact", record);
 	}
 
 	@Override
@@ -68,6 +67,11 @@ public class CaseContactDaoImpl implements CaseContactDao {
 	@Override
 	public long countCCByParams(Map<String, Object> params) {
 		return sqlSessionTemplate.selectOne("countCCByParams", params);
+	}
+
+	@Override
+	public int updateContactByPo(CaseContactPo caseContactPo) {
+		return sqlSessionTemplate.update("updateContactByPo", caseContactPo);
 	}
 
 //	@Override

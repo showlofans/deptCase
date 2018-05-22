@@ -18,8 +18,22 @@ public class CaseBindContactPo {
     private String contactDcid;			//联系人证件号码
 
     private Integer bindType;
+    
+    public CaseBindContactPo(Long lastAccess, Long caseId, String contactDcid,
+			Integer bindType) {
+		super();
+		this.lastAccess = lastAccess;
+		this.caseId = caseId;
+		this.contactDcid = contactDcid;
+		this.bindType = bindType;
+	}
 
-    public Long getId() {
+	public CaseBindContactPo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Long getId() {
         return id;
     }
 

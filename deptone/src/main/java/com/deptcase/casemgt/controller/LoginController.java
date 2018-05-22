@@ -26,6 +26,7 @@ import com.deptcase.casemgt.entity.DeptCasePo;
 import com.deptcase.casemgt.entity.LoginUserPo;
 import com.deptcase.casemgt.url.DeptCaseUrl;
 import com.deptcase.casemgt.url.LoginUserUrl;
+import com.deptcase.enums.UserLimitEnum;
 import com.deptcase.util.DateUtil;
 import com.deptcase.util.PageParam;
 import com.deptcase.util.Pagination;
@@ -60,6 +61,13 @@ public class LoginController {
 	@RequestMapping(value=LoginUserUrl.LIST_USER)
 	public ModelAndView listUser(@RequestParam(value = "pageNo", required = false)String pageNo, LoginUserPo loginUserPo,
 			HttpServletRequest request){
+		LoginUserPo context = (LoginUserPo)request.getSession().getAttribute("loginContext");
+		if(context == null){
+			Map<String, Object> loginMap = new HashMap<String, Object>();
+			String msg = "当前未登录";
+			loginMap.put("msg", msg);
+			return new ModelAndView("/userLogin/login_page","loginMap",loginMap);
+		}
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		PageParam pageParam = null;
 		if(StringHelper.isNotEmpty(pageNo)){
@@ -67,8 +75,10 @@ public class LoginController {
 		}else{
 			pageParam = new PageParam(1, 10);
 		}
+		loginUserPo.setRootFlag(context.getId().toString());
 		Pagination<LoginUserPo> pagination = loginUserAO.listUser(loginUserPo, pageParam);
 		resultMap.put("pagination", pagination);
+		resultMap.put("userLimitEnums", UserLimitEnum.toList());
 		return new ModelAndView("/userLogin/user_list", "resultMap", resultMap);
 	}
 	/**
@@ -80,10 +90,28 @@ public class LoginController {
 	 */
 	@ResponseBody
 	@RequestMapping(value=LoginUserUrl.USER_ADD)
-	public String addUser(LoginUserPo loginUserPo){
-		String msg = loginUserAO.addUser(loginUserPo);
+	public String addUser(LoginUserPo loginUserPo, HttpServletRequest request){
+		LoginUserPo context = (LoginUserPo)request.getSession().getAttribute("loginContext");
+		String msg ="login-error";
+		if(context != null){
+			loginUserPo.setRootFlag(context.getId().toString());
+			msg = loginUserAO.addUser(loginUserPo);
+		}
 		
 		return msg;
+	}
+	/**
+	 * @description: 用户添加页面
+	 * @return
+	 * @author:微族通道代码设计人 宁强
+	 * @createTime:2018年5月22日 下午5:25:39
+	 */
+	@RequestMapping(value=LoginUserUrl.USER_ADD_PAGE)
+	public ModelAndView userAdd(){
+//		String msg = loginUserAO.addUser(loginUserPo);, "resultMap", resultMap
+		
+		
+		return new ModelAndView("/userLogin/user_add");
 	}
 	/**
 	 * @description: 用户登陆
@@ -96,13 +124,16 @@ public class LoginController {
 	@RequestMapping(value=LoginUserUrl.USER_LOGIN)
 	public ModelAndView login( LoginUserPo loginUserPo,
 			HttpServletRequest request){
-//		Map<String, Object> resultMap = get;
 		LoginUserPo userPo = loginUserAO.getOneUser(loginUserPo);
 		String msg = "success";
 		if(userPo == null){
+			Map<String, Object> loginMap = new HashMap<String, Object>();
 			msg = "用户名或密码错误";
+			loginMap.put("msg", msg);
+			return new ModelAndView("/userLogin/login_page","loginMap",loginMap);
 		}
 		request.getSession().setAttribute("loginContext", userPo);
+		
 //		request
 //		resultMap.put("pagination", pagination);
 		return new ModelAndView("/userLogin/login_page");

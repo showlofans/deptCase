@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import com.deptcase.casemgt.entity.CaseContactPo;
+import com.deptcase.casemgt.entity.CaseContactVO;
 
 /**
  * @description: 案件联系人AO层
@@ -35,6 +36,23 @@ public interface CaseContactAO {
 	 */
 	long batchAddCaseContactList(List<CaseContactPo> list);
 	
+	/**
+	 * @description: 在案件上手动添加联系人
+	 * @param caseContactPo
+	 * @return
+	 * @author:微族通道代码设计人 宁强
+	 * @createTime:2018年5月22日 下午3:35:54
+	 */
+	String addContact(CaseContactVO caseContactVO);
+	
+	/**
+	 * @description: 修改联系人
+	 * @param caseContactVO
+	 * @return
+	 * @author:微族通道代码设计人 宁强
+	 * @createTime:2018年5月22日 下午4:22:11
+	 */
+	String editContact(CaseContactVO caseContactVO);
 	/**
 	 * @description: 查询案件列表
 	 * @param deptCasePo

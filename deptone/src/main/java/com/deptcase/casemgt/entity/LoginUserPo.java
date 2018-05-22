@@ -20,6 +20,8 @@ public class LoginUserPo {
     private String rootFlag;
 
     private Long createTime;
+    
+    private String createTimeStr;
 
     private String userRemark;
 
@@ -41,6 +43,16 @@ public class LoginUserPo {
 		this.createTime = createTime;
 		this.userRemark = userRemark;
 	}
+
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
+	}
+
+
 
 	public LoginUserPo() {
 		super();

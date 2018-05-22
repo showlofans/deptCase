@@ -66,7 +66,7 @@
 				<!-- <li><a data-href="http://htmlify.wps.cn/doc/index.html?ksyun=hPT1Afio/word.html&theme=clear" data-title="平台操作指南" href="javascript:void(0)">平台操作指南</a></li> -->
 				<li ><a  data-title="个人信息" data-href="/casemgt/deptCase/list_case.do" onclick="Hui_admin_tab(this)" title="案件管理"">案件管理</a></li>
 				<li ><a  data-title="个人信息" data-href="/casemgt/deptCase/list_case.do" onclick="Hui_admin_tab(this)" title="案件管理"">联系人管理</a></li>
-				<li ><a  data-title="个人信息" data-href="/casemgt/deptCase/list_case.do" onclick="Hui_admin_tab(this)" title="用户管理"">用户管理</a></li>
+				<li ><a  data-title="个人信息" data-href="/casemgt/userLogin/list_user.do" onclick="Hui_admin_tab(this)" title="用户管理"">用户管理</a></li>
 			</ul>
 		</dd>
 	</dl>

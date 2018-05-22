@@ -15,7 +15,16 @@ import com.deptcase.casemgt.entity.CaseBindContactPo;
 public interface CaseBindContactDao {
     int deleteByPrimaryKey(Long id);
 
-    int insert(CaseBindContactPo record);
+    /**
+     * @description: 添加绑定
+     * @param record
+     * @return
+     * @author:微族通道代码设计人 宁强
+     * @createTime:2018年5月22日 下午3:32:06
+     */
+    int addCBC(CaseBindContactPo record);
+    
+    
 
     int insertSelective(CaseBindContactPo record);
 

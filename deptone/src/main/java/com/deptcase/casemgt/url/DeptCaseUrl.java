@@ -34,7 +34,7 @@ public class DeptCaseUrl extends BaseURL{
 	 * 进入首页controller
 	 * <br>/index
 	 */
-	public static final String INDEX = "/index" + DYNAMIC_WEB_SUFFIX;
+	public static final String INDEX = "/home" + DYNAMIC_WEB_SUFFIX;
 	
 	
 }

@@ -16,7 +16,16 @@ import com.deptcase.casemgt.entity.LoginUserPo;
 public interface LoginUserDao {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(LoginUserPo record);
+    int addUser(LoginUserPo record);
+    
+    /**
+     * @description: 添加返key
+     * @param record
+     * @return
+     * @author:微族通道代码设计人 宁强
+     * @createTime:2018年5月22日 上午10:55:22
+     */
+    int addUserKey(LoginUserPo record);
 
     int insertSelective(LoginUserPo record);
 

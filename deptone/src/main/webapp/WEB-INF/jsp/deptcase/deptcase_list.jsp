@@ -32,6 +32,7 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 案件管理  <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.reload();" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a><a class="btn btn-danger radius r" style="line-height:1.6em;margin-top:3px" href="javascript:removeIframe();" title="关闭" ><i class="Hui-iconfont">&#xe6a6;</i></a></nav>
 <div class="page-container">
+	<c:if test="${loginContext.userLimit == 0 }">
 	<div class="text-c">
 		<form class="form form-horizontal" name="form-import" action="?"  id="form-import" enctype="multipart/form-data">
 		<div class="formControls col-xs-8 col-sm-9">
@@ -72,6 +73,7 @@
 		<input type="hidden" name="pageNo" value="${resultMap.pagination.pageNo }"> 
 		</form>
 	</div>
+	</c:if>
 	<div class="mt-20">
 		<table class="table table-border table-bordered table-bg table-hover table-sort">
 			<thead>
