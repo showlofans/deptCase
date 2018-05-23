@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -19,8 +20,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.deptcase.casemgt.ao.CaseContactAO;
 import com.deptcase.casemgt.ao.DeptCaseAO;
+import com.deptcase.casemgt.ao.LoginUserAO;
+import com.deptcase.casemgt.dao.LoginUserDao;
 import com.deptcase.casemgt.entity.DeptCasePo;
+import com.deptcase.casemgt.entity.DeptCaseVO;
+import com.deptcase.casemgt.entity.LoginUserPo;
 import com.deptcase.casemgt.url.DeptCaseUrl;
 import com.deptcase.util.DateUtil;
 import com.deptcase.util.PageParam;
@@ -41,9 +47,16 @@ public class DeptCaseController {
 
 	@Resource
 	private DeptCaseAO deptCaseAO;
+	@Resource
+	private CaseContactAO caseContactAO;
+//	@Resource
+//	private LoginUserAO loginUserAO;
+	@Resource
+	private LoginUserDao loginUserDao; 
+//	LoginUserPo userPo = loginUserAO.getOneUser(loginUserPo);
 	
 	/**
-	 * @description: 导入案件列表 
+	 * @description: 查询案件列表 
 	 * @param pageNo
 	 * @param deptCasePo
 	 * @param request
@@ -61,9 +74,55 @@ public class DeptCaseController {
 		}else{
 			pageParam = new PageParam(1, 10);
 		}
-		Pagination<DeptCasePo> pagination = deptCaseAO.listCase(deptCasePo, pageParam);
+		LoginUserPo context = (LoginUserPo)request.getSession().getAttribute("loginContext");
+		if(context == null){
+			Map<String, Object> loginMap = new HashMap<String, Object>();
+			String msg = "当前未登录";
+			loginMap.put("msg", msg);
+			return new ModelAndView("/userLogin/login_page","loginMap",loginMap);
+		}
+		deptCasePo.setCaseAdmin(context.getId());
+		Pagination<DeptCaseVO> pagination = deptCaseAO.listCase(deptCasePo, pageParam);
 		resultMap.put("pagination", pagination);
 		return new ModelAndView("/deptcase/deptcase_list", "resultMap", resultMap);
+	}
+	/**
+	 * @description:案件批量分配页面 
+	 * @param pageNo
+	 * @param deptCasePo
+	 * @param request
+	 * @return
+	 * @author:微族通道代码设计人 宁强
+	 * @createTime:2018年5月23日 下午4:30:15
+	 */
+	@RequestMapping(value=DeptCaseUrl.BATCH_DISTRIBUTE_CASE_PAGE)
+	public ModelAndView batchdistributeCasePage(@RequestParam(value = "pageNo", required = false)String pageNo,
+			Integer contactId, HttpServletRequest request){
+		PageParam pageParam = null;
+		if(StringHelper.isNotEmpty(pageNo)){
+			pageParam = new PageParam(Integer.parseInt(pageNo), 10);
+		}else{
+			pageParam = new PageParam(1, 10);
+		}
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		LoginUserPo context = (LoginUserPo)request.getSession().getAttribute("loginContext");
+		if(context == null){
+			Map<String, Object> loginMap = new HashMap<String, Object>();
+			String msg = "当前未登录";
+			loginMap.put("msg", msg);
+			return new ModelAndView("/userLogin/login_page","loginMap",loginMap);
+		}
+		LoginUserPo userPo = loginUserDao.getOneUserById(contactId);
+		resultMap.put("userPo", userPo);
+		Pagination<DeptCaseVO> pagination = deptCaseAO.listUnDisCase(context.getId(), pageParam);
+		List<DeptCaseVO> contactCaseList = deptCaseAO.listContactCase(contactId);
+		
+//		Pagination<DeptCaseVO> pagination = deptCaseAO.listContactCase(contactId, pageParam);
+		resultMap.put("contactCaseList", contactCaseList);
+		resultMap.put("pagination", pagination);//未分配给用户的案件
+//		Pagination<DeptCasePo> pagination = deptCaseAO.listCase(deptCasePo, pageParam);
+//		resultMap.put("pagination", pagination);
+		return new ModelAndView("/deptcase/batch_distribute_case", "resultMap", resultMap);
 	}
 	
 	/**
@@ -126,5 +185,6 @@ public class DeptCaseController {
 			e.printStackTrace();
 		}
 	}
+	
 	
 }

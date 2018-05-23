@@ -53,6 +53,15 @@ public interface CaseContactAO {
 	 * @createTime:2018年5月22日 下午4:22:11
 	 */
 	String editContact(CaseContactVO caseContactVO);
+	
+	/**
+	 * @description: 通过案件ID查找所有关联的联系人
+	 * @param caseId
+	 * @return
+	 * @author:微族通道代码设计人 宁强
+	 * @createTime:2018年5月23日 上午10:22:06
+	 */
+	List<CaseContactPo> getContactByCaseId(Long caseId);
 	/**
 	 * @description: 查询案件列表
 	 * @param deptCasePo

@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.deptcase.casemgt.dao.CaseContactPoMapper" >
 	<sql id="t_contact">case_contact</sql>
+	<sql id="t_cbc">case_bind_contact</sql>
 	
   <resultMap id="BaseResultMap" type="com.deptcase.casemgt.entity.CaseContactPo" >
     <id column="id" property="id" jdbcType="BIGINT" />
@@ -38,6 +39,25 @@
   		#{caseContact.lastAccess},#{caseContact.contactAddUser},#{caseContact.householdDcid})
   	</foreach>
   </insert>
+  <!-- 通过参数案件ID查找所有关联的联系人 -->
+  <select id="getContactByCaseId" parameterType="map" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List"></include> 
+  	from <include refid="t_contact"></include> 
+  	<where>
+  		<if test="caseId != null">
+  			household_dcid
+			=(SELECT cc.household_dcid FROM <include refid="t_cbc"></include> cbc
+			INNER JOIN <include refid="t_contact"></include> cc
+			on cc.contact_dcid=cbc.contact_dcid
+			INNER JOIN <include refid="t_contact"></include> cc2
+			on cc2.id=cc.id
+			WHERE cbc.case_id=#{caseId} and cbc.bind_type=0)
+			or contact_dcid IN(
+			SELECT cbc2.contact_dcid from <include refid="t_cbc"></include> cbc2
+			where cbc2.bind_type=1 and cbc2.case_id=#{caseId})
+  		</if>
+  	</where>
+  </select>
   <select id="countCCByParams" parameterType="map" resultType="long">
   	 select count(*)
     from <include refid="t_contact"></include>

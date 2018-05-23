@@ -68,6 +68,14 @@
     	<include refid="condition_sql"></include>
     </where>
   </select>
+  <select id="getOneUserById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from <include refid="t_user"></include>
+    <where>
+    	id=#{_parameter}
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from login_user
     where id = #{id,jdbcType=INTEGER}

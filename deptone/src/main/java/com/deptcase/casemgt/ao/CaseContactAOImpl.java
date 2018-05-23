@@ -195,4 +195,15 @@ public class CaseContactAOImpl implements CaseContactAO {
 		return res;
 	}
 
+	@Override
+	public List<CaseContactPo> getContactByCaseId(Long caseId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		if(caseId == null){
+			return null;
+		}
+		params.put("caseId", caseId);
+		List<CaseContactPo> contactList = caseContactDao.getContactByCaseId(params);
+		return contactList;
+	}
+
 }

@@ -40,14 +40,14 @@
 //		String msg = loginUserAO.addUser(new LoginUserPo("tiger", "tiger", UserLimitEnum.SUPPPER_LIMIT.getValue(), "0", System.currentTimeMillis(), "第一个超管"));
 //		System.out.println("添加情况："+msg);
 //	}
-//	@Test
-//	public void testAddKey(){
-//		 //useGeneratedKeys="true" keyProperty="id"
-//		LoginUserPo loginUser = new LoginUserPo("zheng", "zheng", UserLimitEnum.ORDINARY_LIMIT.getValue(), "1", System.currentTimeMillis(), "第三个用户");
-//		int msg = loginUserDao.addUserKey(loginUser);
-//		System.out.println(loginUser.getId());
-//		System.out.println("添加情况："+msg);
-//	}
+////	@Test
+////	public void testAddKey(){
+////		 //useGeneratedKeys="true" keyProperty="id"
+////		LoginUserPo loginUser = new LoginUserPo("zheng", "zheng", UserLimitEnum.ORDINARY_LIMIT.getValue(), "1", System.currentTimeMillis(), "第三个用户");
+////		int msg = loginUserDao.addUserKey(loginUser);
+////		System.out.println(loginUser.getId());
+////		System.out.println("添加情况："+msg);
+////	}
 ////	@Test
 //	public void testEditUser(){
 //		LoginUserPo loginUserPo = new LoginUserPo();
@@ -55,6 +55,11 @@
 //		loginUserPo.setPass("chicken");
 //		String msg = loginUserAO.editUser(loginUserPo);
 //		System.out.println("编辑情况："+msg);
+//	}
+//	@Test
+//	public void getOneUserById(){
+//		LoginUserPo loginUserPo = loginUserDao.getOneUserById(1);
+//		System.out.println(loginUserPo.getName()+"\t"+loginUserPo.getPass());
 //	}
 ////	@Test
 //	public void testGetOneUser(){

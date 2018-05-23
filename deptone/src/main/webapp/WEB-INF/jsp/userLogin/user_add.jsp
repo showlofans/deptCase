@@ -95,7 +95,6 @@ line-height:220px;
 					required:true,
 				}
 			},
-			onkeyup:false,
 			submitHandler:function(form){
 				$.ajax({
 			        type:"post",
@@ -103,11 +102,9 @@ line-height:220px;
 			        data: $(form).serialize(),//表单数据
 			        async : false,
 			        success:function(d){
-			        	//layer.msg(d);
 			         	if(d == "success"){
-			         		layer.msg('保存成功！');//保存成功提示
-	                   		var index = parent.layer.getFrameIndex(window.name); //获取当前窗体索引
-	                        parent.layer.close(index);// 执行关闭
+			         		var index = parent.layer.getFrameIndex(window.name); //获取当前窗体索引
+	                        parent.layer.close(index);// 执行关闭 
 			           } 
 			         	if(d=="login-error"){
 	                       layer.msg('保存异常!');

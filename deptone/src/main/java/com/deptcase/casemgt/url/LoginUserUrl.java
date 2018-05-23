@@ -21,6 +21,11 @@ public class LoginUserUrl extends BaseURL {
 	 */
 	public static final String USER_LOGIN = "/user_login" + DYNAMIC_WEB_SUFFIX;
 	/**
+	 * 用户退出登陆
+	 * <br>/casemgt/userLogin/user_logout
+	 */
+	public static final String USER_LOGOUT = "/user_logout" + DYNAMIC_WEB_SUFFIX;
+	/**
 	 * 用户登录页面
 	 * <br>/casemgt/userLogin/login_page
 	 */

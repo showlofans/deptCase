@@ -23,11 +23,12 @@
     <result column="last_access" property="lastAccess" jdbcType="BIGINT" />
     <result column="access_log" property="accessLog" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="case_state" property="caseState" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Add_Column_List" >
     dept_date, dept_end_date, dept_amount, dept_balance, dept_profit, dc_id, case_org, 
     customer_contact, customer_location, case_warrantor, case_customer, case_admin, 
-    dept_for, warrantor_way,last_access, access_log, create_time
+    dept_for, warrantor_way,last_access, access_log, create_time, case_state
   </sql>
    <!-- 批量添加 -->
    <insert id="batchAddCase" useGeneratedKeys="true" parameterType="java.util.List">
@@ -37,13 +38,13 @@
   	<foreach collection="list" item="caseD" index="index" separator=",">
   		(#{caseD.deptDate},#{caseD.deptEndDate},#{caseD.deptAmount},#{caseD.deptBalance},#{caseD.deptProfit},#{caseD.dcId},#{caseD.caseOrg},
   		#{caseD.customerContact},#{caseD.customerLocation},#{caseD.caseWarrantor},#{caseD.caseCustomer},#{caseD.caseAdmin},
-  		#{caseD.deptFor},#{caseD.warrantorWay},#{caseD.lastAccess},#{caseD.accessLog},#{caseD.createTime})
+  		#{caseD.deptFor},#{caseD.warrantorWay},#{caseD.lastAccess},#{caseD.accessLog},#{caseD.createTime},#{caseD.caseState})
   	</foreach>
   </insert>
   <sql id="Base_Column_List" >
     id, dept_date, dept_end_date, dept_amount, dept_balance, dept_profit, dc_id, case_org, 
     customer_contact, customer_location, case_warrantor, case_customer, case_admin, 
-    dept_for, warrantor_way, last_access,  access_log, create_time
+    dept_for, warrantor_way, last_access,  access_log, create_time, case_state
   </sql>
   <!-- 获得待绑定的绑定列表 -->
   <sql id="binding_list">
@@ -74,6 +75,9 @@
   	from <include refid="t_case"></include>
   	<where>
   		<include refid="condition_sql"></include>
+  		<if test="inCaseStates != null">
+  			AND case_state in <foreach item="caseState" index="index" collection="inCaseStates" open="(" separator="," close=")">#{caseState}</foreach>
+  		</if> 
   		AND 1=1
   		order by last_access desc
  		<if test="start != null">
@@ -84,6 +88,25 @@
 		 </if>
   	</where>
   </select>
+  <!-- 查询未分配的案件列表 -->
+ <!--  <select id="listUnDisCase" parameterType="map" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"></include> 
+  	from <include refid="t_case"></include>
+  	<where>
+  		<include refid="condition_sql"></include>
+  		<if test="inCaseStates != null">
+  			AND case_state in <foreach item="caseState" index="index" collection="inCaseStates" open="(" separator="," close=")">#{caseState}</foreach>
+  		</if> 
+  		AND 1=1
+  		order by last_access desc
+ 		<if test="start != null">
+	 	limit #{start}
+		 </if>
+		 <if test="end != null">
+		 	, #{end}
+		 </if>
+  	</where>
+  </select> -->
   
   <sql id="condition_sql">
   	 <!-- <if test="deptDate != null" >
@@ -97,173 +120,67 @@
       </if>
       -->
       <if test="deptAmount != null" >
-        AND dept_amount = #{deptAmount,jdbcType=DOUBLE},
+        AND dept_amount = #{deptAmount,jdbcType=DOUBLE}
       </if>
       <if test="deptBalance != null" >
-        AND dept_balance = #{deptBalance,jdbcType=DOUBLE},
+        AND dept_balance = #{deptBalance,jdbcType=DOUBLE}
       </if>
       <if test="deptProfit != null" >
-        AND dept_profit = #{deptProfit,jdbcType=DOUBLE},
+        AND dept_profit = #{deptProfit,jdbcType=DOUBLE}
       </if>
       <if test="dcId != null" >
-        AND dc_id = #{dcId,jdbcType=VARCHAR},
+        AND dc_id = #{dcId,jdbcType=VARCHAR}
       </if>
       <if test="caseOrg != null" >
-        AND case_org = #{caseOrg,jdbcType=VARCHAR},
+        AND case_org = #{caseOrg,jdbcType=VARCHAR}
       </if>
       <if test="customerContact != null" >
-        AND customer_contact = #{customerContact,jdbcType=VARCHAR},
+        AND customer_contact = #{customerContact,jdbcType=VARCHAR}
       </if>
       <if test="customerLocation != null" >
-       AND  customer_location = #{customerLocation,jdbcType=VARCHAR},
+       AND  customer_location = #{customerLocation,jdbcType=VARCHAR}
       </if>
       <if test="caseWarrantor != null" >
-       AND  case_warrantor = #{caseWarrantor,jdbcType=VARCHAR},
+       AND  case_warrantor = #{caseWarrantor,jdbcType=VARCHAR}
       </if>
       <if test="caseCustomer != null" >
-        AND case_customer = #{caseCustomer,jdbcType=VARCHAR},
+        AND case_customer = #{caseCustomer,jdbcType=VARCHAR}
       </if>
       <if test="caseAdmin != null" >
-        AND case_admin = #{caseAdmin,jdbcType=INTEGER},
+        AND case_admin = #{caseAdmin,jdbcType=INTEGER}
       </if>
       <if test="lastAccess != null" >
-        AND last_access = #{lastAccess,jdbcType=BIGINT},
+        AND last_access = #{lastAccess,jdbcType=BIGINT}
       </if>
       <if test="accessLog != null" >
-        AND access_log = #{accessLog,jdbcType=INTEGER},
+        AND access_log = #{accessLog,jdbcType=INTEGER}
+      </if>
+      <if test="caseState != null" >
+        AND case_state = #{caseState,jdbcType=INTEGER}
       </if>
   </sql>
-  
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <!-- 根据id获得案件详情 -->
+  <select id="getOneCaseById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from dept_case
-    where id = #{id,jdbcType=INTEGER}
+    from <include refid="t_case"></include>
+    where id = #{_parameter}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from dept_case
-    where id = #{id,jdbcType=INTEGER}
+  <!-- <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from <include refid="t_case"></include>
+    where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.deptcase.casemgt.entity.DeptCasePo" >
-    insert into dept_case (id, dept_date, dept_end_date, 
-      dept_amount, dept_balance, dept_profit, 
-      dc_id, case_org, customer_contact, 
-      customer_location, case_warrantor, case_customer, 
-      case_admin, last_access, access_log, 
-      create_time)
-    values (#{id,jdbcType=INTEGER}, #{deptDate,jdbcType=BIGINT}, #{deptEndDate,jdbcType=BIGINT}, 
+    insert into <include refid="t_case"></include> (<include refid="Add_Column_List"></include>)
+    values (#{deptDate,jdbcType=BIGINT}, #{deptEndDate,jdbcType=BIGINT}, 
       #{deptAmount,jdbcType=DOUBLE}, #{deptBalance,jdbcType=DOUBLE}, #{deptProfit,jdbcType=DOUBLE}, 
       #{dcId,jdbcType=VARCHAR}, #{caseOrg,jdbcType=VARCHAR}, #{customerContact,jdbcType=VARCHAR}, 
       #{customerLocation,jdbcType=VARCHAR}, #{caseWarrantor,jdbcType=VARCHAR}, #{caseCustomer,jdbcType=VARCHAR}, 
       #{caseAdmin,jdbcType=INTEGER}, #{lastAccess,jdbcType=BIGINT}, #{accessLog,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=BIGINT})
+      #{createTime,jdbcType=BIGINT},#{caseState,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.deptcase.casemgt.entity.DeptCasePo" >
-    insert into dept_case
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="deptDate != null" >
-        dept_date,
-      </if>
-      <if test="deptEndDate != null" >
-        dept_end_date,
-      </if>
-      <if test="deptAmount != null" >
-        dept_amount,
-      </if>
-      <if test="deptBalance != null" >
-        dept_balance,
-      </if>
-      <if test="deptProfit != null" >
-        dept_profit,
-      </if>
-      <if test="dcId != null" >
-        dc_id,
-      </if>
-      <if test="caseOrg != null" >
-        case_org,
-      </if>
-      <if test="customerContact != null" >
-        customer_contact,
-      </if>
-      <if test="customerLocation != null" >
-        customer_location,
-      </if>
-      <if test="caseWarrantor != null" >
-        case_warrantor,
-      </if>
-      <if test="caseCustomer != null" >
-        case_customer,
-      </if>
-      <if test="caseAdmin != null" >
-        case_admin,
-      </if>
-      <if test="lastAccess != null" >
-        last_access,
-      </if>
-      <if test="accessLog != null" >
-        access_log,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="deptDate != null" >
-        #{deptDate,jdbcType=BIGINT},
-      </if>
-      <if test="deptEndDate != null" >
-        #{deptEndDate,jdbcType=BIGINT},
-      </if>
-      <if test="deptAmount != null" >
-        #{deptAmount,jdbcType=DOUBLE},
-      </if>
-      <if test="deptBalance != null" >
-        #{deptBalance,jdbcType=DOUBLE},
-      </if>
-      <if test="deptProfit != null" >
-        #{deptProfit,jdbcType=DOUBLE},
-      </if>
-      <if test="dcId != null" >
-        #{dcId,jdbcType=VARCHAR},
-      </if>
-      <if test="caseOrg != null" >
-        #{caseOrg,jdbcType=VARCHAR},
-      </if>
-      <if test="customerContact != null" >
-        #{customerContact,jdbcType=VARCHAR},
-      </if>
-      <if test="customerLocation != null" >
-        #{customerLocation,jdbcType=VARCHAR},
-      </if>
-      <if test="caseWarrantor != null" >
-        #{caseWarrantor,jdbcType=VARCHAR},
-      </if>
-      <if test="caseCustomer != null" >
-        #{caseCustomer,jdbcType=VARCHAR},
-      </if>
-      <if test="caseAdmin != null" >
-        #{caseAdmin,jdbcType=INTEGER},
-      </if>
-      <if test="lastAccess != null" >
-        #{lastAccess,jdbcType=BIGINT},
-      </if>
-      <if test="accessLog != null" >
-        #{accessLog,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-  
   <update id="updateByPrimaryKeySelective" parameterType="com.deptcase.casemgt.entity.DeptCasePo" >
-    update dept_case
+    update <include refid="t_case"></include>
     <set >
       <if test="deptDate != null" >
         dept_date = #{deptDate,jdbcType=BIGINT},
@@ -310,8 +227,11 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=BIGINT},
       </if>
+      <if test="caseState != null" >
+        case_state = #{caseState,jdbcType=BIGINT},
+      </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.deptcase.casemgt.entity.DeptCasePo" >
     update dept_case
@@ -329,7 +249,8 @@
       case_admin = #{caseAdmin,jdbcType=INTEGER},
       last_access = #{lastAccess,jdbcType=BIGINT},
       access_log = #{accessLog,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=BIGINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+      create_time = #{createTime,jdbcType=BIGINT},
+      case_state = #{caseState,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update> -->
 </mapper>

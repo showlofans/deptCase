@@ -83,12 +83,12 @@
 					<th width="80">贷款日期</th>
 					<th width="80">到期日期</th>
 					<th width="80">贷款金额</th>
-					<th width="75">贷款余额</th>
-					<th width="60">结欠利息</th>
-					<th width="120">证件号码</th>
+					<!-- <th width="75">贷款余额</th>
+					<th width="60">结欠利息</th> -->
 					<th width="100">机构名称</th>
-					<th width="80">联系电话</th>
-					<th width="100">地址</th>
+					<!-- <th width="80">联系电话</th>
+					<th width="120">证件号码</th>
+					<th width="100">地址</th> -->
 					<th width="80">保证人名称</th>
 					<th width="80">导入时间</th>
 					<th width="80">操作</th>
@@ -112,24 +112,24 @@
 						<td class="f-14">
 							${deptcase.deptAmount }
 						</td>
-						<td class="f-14">
+						<%-- <td class="f-14">
 							${deptcase.deptBalance }
 						</td>
 						<td class="f-14">
 							${deptcase.deptProfit }
-						</td>
-						<td class="f-14">
-							${deptcase.dcId }
-						</td>
+						</td> --%>
 						<td class="f-14">
 							${deptcase.caseOrg }
+						</td>
+						<%-- <td class="f-14">
+							${deptcase.dcId }
 						</td>
 						<td class="f-14">
 							${deptcase.customerContact }
 						</td>
 						<td class="f-14">
 							${deptcase.customerLocation }
-						</td>
+						</td> --%>
 						<td class="f-14">
 							${deptcase.caseWarrantor }
 						</td>
@@ -138,7 +138,7 @@
 						</td>
 						<td class="f-14 td-manage success"> 
 							分配&nbsp;&nbsp;	删除&nbsp;&nbsp;	
-							<a data-title="联系记录" data-href="/casemgt/contactRecord/list_record.do" onclick="Hui_admin_tab(this)" title="联系记录"">记录</a>
+							<a data-title="联系记录" data-href="/casemgt/contactRecord/list_record.do?caseId=${deptcase.id }" onclick="Hui_admin_tab(this)" title="联系记录"">记录</a>
 						</td>
 							<%--<a style="text-decoration:none" onClick="deptcase_del('/flowsys/deptcase/deptcase_del.do','${deptcase.id}','${deptcase.epName }')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> 
 							<a style="text-decoration:none" class="ml-5" onClick="deptcase_edit('平台信息编辑','/flowsys/deptcase/deptcase_edit_page.do?epId=${deptcase.id}','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <!-- <a style="text-decoration:none" class="ml-5" onClick="deptcase_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> --></td> --%>

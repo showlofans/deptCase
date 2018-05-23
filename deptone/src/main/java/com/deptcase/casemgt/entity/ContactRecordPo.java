@@ -5,7 +5,7 @@ public class ContactRecordPo {
 
     private Long ccId;
 
-    private Integer caseId;
+    private Long caseId;
 
     private String caseContact;
 
@@ -33,11 +33,11 @@ public class ContactRecordPo {
         this.ccId = ccId;
     }
 
-    public Integer getCaseId() {
+    public Long getCaseId() {
         return caseId;
     }
 
-    public void setCaseId(Integer caseId) {
+    public void setCaseId(Long caseId) {
         this.caseId = caseId;
     }
 

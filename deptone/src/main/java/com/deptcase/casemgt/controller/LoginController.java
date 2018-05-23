@@ -122,7 +122,7 @@ public class LoginController {
 	 * @createTime:2018年5月21日 下午3:16:12
 	 */
 	@RequestMapping(value=LoginUserUrl.USER_LOGIN)
-	public ModelAndView login( LoginUserPo loginUserPo,
+	public ModelAndView login(LoginUserPo loginUserPo,
 			HttpServletRequest request){
 		LoginUserPo userPo = loginUserAO.getOneUser(loginUserPo);
 		String msg = "success";
@@ -133,6 +133,31 @@ public class LoginController {
 			return new ModelAndView("/userLogin/login_page","loginMap",loginMap);
 		}
 		request.getSession().setAttribute("loginContext", userPo);
+		
+//		request
+//		resultMap.put("pagination", pagination);
+		return new ModelAndView("/userLogin/login_page");
+	}
+	/**
+	 * @description:用户退出登陆 
+	 * @param loginUserPo
+	 * @param request
+	 * @return
+	 * @author:微族通道代码设计人 宁强
+	 * @createTime:2018年5月23日 下午4:17:08
+	 */
+	@RequestMapping(value=LoginUserUrl.USER_LOGOUT)
+	public ModelAndView logout(HttpServletRequest request){
+		request.getSession().removeAttribute("loginContext");
+//		LoginUserPo userPo = loginUserAO.getOneUser(loginUserPo);
+//		String msg = "success";
+//		if(userPo == null){
+//			Map<String, Object> loginMap = new HashMap<String, Object>();
+//			msg = "用户名或密码错误";
+//			loginMap.put("msg", msg);
+//			return new ModelAndView("/userLogin/login_page","loginMap",loginMap);
+//		}
+//		request.getSession().setAttribute("loginContext", userPo);
 		
 //		request
 //		resultMap.put("pagination", pagination);

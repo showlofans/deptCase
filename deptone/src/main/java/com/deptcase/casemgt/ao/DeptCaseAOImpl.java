@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.deptcase.casemgt.dao.DeptCaseDao;
 import com.deptcase.casemgt.entity.DeptCasePo;
+import com.deptcase.casemgt.entity.DeptCaseVO;
 import com.deptcase.enums.CaseEventEnum;
+import com.deptcase.enums.CaseStateEnum;
 import com.deptcase.util.DateUtil;
 import com.deptcase.util.DeptCaseExcelUtil;
 import com.deptcase.util.PageParam;
@@ -24,7 +26,7 @@ import com.deptcase.util.StringHelper;
 @Service(value="deptCaseAO")
 public class DeptCaseAOImpl implements DeptCaseAO {
 
-	Logger logger = Logger.getLogger(DeptCaseAOImpl.class);
+//	Logger logger = Logger.getLogger(DeptCaseAOImpl.class);
 	
 	@Resource
 	private DeptCaseDao deptCaseDao;
@@ -140,7 +142,7 @@ public class DeptCaseAOImpl implements DeptCaseAO {
 //				logger.info("第" + currentNum + "条商家ID不存在");
 				continue;
 			}
-			DeptCasePo deptCasePo = new DeptCasePo(deptAmount, deptBalance, deptProfit, dcId, caseOrg, customerContact, customerLocation, caseWarrantor, caseCustomer, userId, CaseEventEnum.CASE_IMPORT.getValue(),deptFor,warrantorWay);
+			DeptCasePo deptCasePo = new DeptCasePo(deptAmount, deptBalance, deptProfit, dcId, caseOrg, customerContact, CaseStateEnum.NEWONE.getValue(),customerLocation, caseWarrantor, caseCustomer,  userId, CaseEventEnum.CASE_IMPORT.getValue(),deptFor,warrantorWay);
 //			deptCasePo.set
 //			invoiceRecord.setOperator(operator);
 			deptCasePo.setLastAccess(System.currentTimeMillis());
@@ -161,15 +163,9 @@ public class DeptCaseAOImpl implements DeptCaseAO {
 	}
 
 	@Override
-	public Pagination<DeptCasePo> listCase(DeptCasePo deptCasePo,
+	public Pagination<DeptCaseVO> listCase(DeptCasePo deptCasePo,
 			PageParam pageParam) {
-		Map<String, Object> paramsMap = new HashMap<String, Object>();
-//		paramsMap.put("epName", ep.getEpName());
-//		paramsMap.put("epEngId", ep.getEpEngId());
-//		paramsMap.put("epFor", ep.getEpFor());
-//		if(ep.getId() != null){
-//			paramsMap.put("id", ep.getId());
-//		}
+		Map<String, Object> paramsMap = getParamsByPo(deptCasePo);
 		int toatalRecord = deptCaseDao.countCase(paramsMap);
 		int pageSize = 10;
 		int pageNo = 1;
@@ -179,16 +175,86 @@ public class DeptCaseAOImpl implements DeptCaseAO {
 			paramsMap.put("start", (pageNo-1)*pageSize);
 			paramsMap.put("end", pageSize);
 		}
-		List<DeptCasePo> records = deptCaseDao.listCase(paramsMap);
-//		for (ExchangePlatformPo exchangePlatformPo : records) {//动态设置平台余额
-////			exchangePlatformPo.setEpBalance(epBalance);
-//			String lastAccessStr = DateUtil.formatPramm(exchangePlatformPo.getLastAccess(),"yyyy-MM-dd");
-//			exchangePlatformPo.setLastAccessStr(lastAccessStr);
-//			String dataUserPass = Hash.BASE_UTIL.decode(exchangePlatformPo.getEpUserPass());
-//			exchangePlatformPo.setEpUserPass(dataUserPass);
-//		}
-		return new Pagination<DeptCasePo>(records, toatalRecord, pageNo, pageSize);
-//		return new Pagination<DeptCasePo>(null, 0,pageParam.getPageNo() , pageParam.getPageSize());
+		List<DeptCasePo> caseList = deptCaseDao.listCase(paramsMap);
+		
+		List<DeptCaseVO> caseVOList = new LinkedList<DeptCaseVO>();
+		for (DeptCasePo deptCasePo2 : caseList) {
+			String deptDate = DateUtil.formatAll(deptCasePo2.getDeptDate());
+			String deptEndDate = DateUtil.formatAll(deptCasePo2.getDeptEndDate());
+			String createTime = DateUtil.formatAll(deptCasePo2.getCreateTime());
+			String lastAccess = DateUtil.formatAll(deptCasePo2.getLastAccess());
+			DeptCaseVO deptCaseVO = new DeptCaseVO(deptDate, deptEndDate, deptCasePo2.getDeptAmount(), deptCasePo2.getDeptBalance(), deptCasePo2.getDeptProfit(), deptCasePo2.getDcId(), deptCasePo2.getCaseOrg(), deptCasePo2.getCustomerContact(), deptCasePo2.getCustomerLocation(), deptCasePo2.getCaseWarrantor(), deptCasePo2.getCaseCustomer(), deptCasePo2.getCaseAdmin(), lastAccess, deptCasePo2.getAccessLog(), createTime, deptCasePo2.getDeptFor(), deptCasePo2.getWarrantorWay(), deptCasePo2.getLoanNumber(), deptCasePo2.getCaseState());
+			caseVOList.add(deptCaseVO);
+		}
+		return new Pagination<DeptCaseVO>(caseVOList, toatalRecord, pageNo, pageSize);
+	}
+	
+	private Map<String, Object> getParamsByPo(DeptCasePo deptCasePo){
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		if(deptCasePo.getCaseAdmin() != null){
+			paramsMap.put("caseAdmin", deptCasePo.getCaseAdmin());
+		}
+		return paramsMap;
+	}
+
+	@Override
+	public DeptCaseVO getOneCaseById(Long id) {
+		DeptCasePo deptCasePo = deptCaseDao.getOneCaseById(id);
+		DeptCaseVO deptCaseVO = null;
+		if(deptCasePo != null){
+			String deptDate = DateUtil.formatAll(deptCasePo.getDeptDate());
+			String deptEndDate = DateUtil.formatAll(deptCasePo.getDeptEndDate());
+			String createTime = DateUtil.formatAll(deptCasePo.getCreateTime());
+			String lastAccess = DateUtil.formatAll(deptCasePo.getLastAccess());
+			deptCaseVO = new DeptCaseVO(deptDate, deptEndDate, deptCasePo.getDeptAmount(), deptCasePo.getDeptBalance(), deptCasePo.getDeptProfit(), deptCasePo.getDcId(), deptCasePo.getCaseOrg(), deptCasePo.getCustomerContact(), deptCasePo.getCustomerLocation(), deptCasePo.getCaseWarrantor(), deptCasePo.getCaseCustomer(), deptCasePo.getCaseAdmin(), lastAccess, deptCasePo.getAccessLog(), createTime, deptCasePo.getDeptFor(), deptCasePo.getWarrantorWay(), deptCasePo.getLoanNumber(), deptCasePo.getCaseState());
+		}
+		return deptCaseVO;
+	}
+
+	@Override
+	public List<DeptCaseVO> listContactCase(Integer contactId) {
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("caseAdmin", contactId);
+		List<DeptCasePo> caseList = deptCaseDao.listCase(paramsMap);
+		List<DeptCaseVO> caseVOList = new LinkedList<DeptCaseVO>();
+		for (DeptCasePo deptCasePo : caseList) {
+			String deptDate = DateUtil.formatAll(deptCasePo.getDeptDate());
+			String deptEndDate = DateUtil.formatAll(deptCasePo.getDeptEndDate());
+			String createTime = DateUtil.formatAll(deptCasePo.getCreateTime());
+			String lastAccess = DateUtil.formatAll(deptCasePo.getLastAccess());
+			DeptCaseVO deptCaseVO = new DeptCaseVO(deptDate, deptEndDate, deptCasePo.getDeptAmount(), deptCasePo.getDeptBalance(), deptCasePo.getDeptProfit(), deptCasePo.getDcId(), deptCasePo.getCaseOrg(), deptCasePo.getCustomerContact(), deptCasePo.getCustomerLocation(), deptCasePo.getCaseWarrantor(), deptCasePo.getCaseCustomer(), deptCasePo.getCaseAdmin(), lastAccess, deptCasePo.getAccessLog(), createTime, deptCasePo.getDeptFor(), deptCasePo.getWarrantorWay(), deptCasePo.getLoanNumber(), deptCasePo.getCaseState());
+			caseVOList.add(deptCaseVO);
+		}
+		return caseVOList;
+	}
+
+	@Override
+	public Pagination<DeptCaseVO>  listUnDisCase(Integer contextId ,PageParam pageParam) {
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("caseAdmin", contextId);
+		Integer [] inCaseStates = new Integer[]{CaseStateEnum.NEWONE.getValue(),CaseStateEnum.UNDISTRIBUE.getValue()};
+		paramsMap.put("inCaseStates", inCaseStates);
+		int toatalRecord = deptCaseDao.countCase(paramsMap);
+		int pageSize = 10;
+		int pageNo = 1;
+		if(pageParam != null){
+			pageSize = pageParam.getPageSize();
+			pageNo = pageParam.getPageNo();
+			paramsMap.put("start", (pageNo-1)*pageSize);
+			paramsMap.put("end", pageSize);
+		}
+		List<DeptCasePo> caseList = deptCaseDao.listCase(paramsMap);
+		List<DeptCaseVO> caseVOList = new LinkedList<DeptCaseVO>();
+		for (DeptCasePo deptCasePo : caseList) {
+			String deptDate = DateUtil.formatAll(deptCasePo.getDeptDate());
+			String deptEndDate = DateUtil.formatAll(deptCasePo.getDeptEndDate());
+			String createTime = DateUtil.formatAll(deptCasePo.getCreateTime());
+			String lastAccess = DateUtil.formatAll(deptCasePo.getLastAccess());
+			DeptCaseVO deptCaseVO = new DeptCaseVO(deptDate, deptEndDate, deptCasePo.getDeptAmount(), deptCasePo.getDeptBalance(), deptCasePo.getDeptProfit(), deptCasePo.getDcId(), deptCasePo.getCaseOrg(), deptCasePo.getCustomerContact(), deptCasePo.getCustomerLocation(), deptCasePo.getCaseWarrantor(), deptCasePo.getCaseCustomer(), deptCasePo.getCaseAdmin(), lastAccess, deptCasePo.getAccessLog(), createTime, deptCasePo.getDeptFor(), deptCasePo.getWarrantorWay(), deptCasePo.getLoanNumber(), deptCasePo.getCaseState());
+			caseVOList.add(deptCaseVO);
+		}
+		return new Pagination<DeptCaseVO>(caseVOList, toatalRecord, pageNo, pageSize);
+		
 	}
 
 }

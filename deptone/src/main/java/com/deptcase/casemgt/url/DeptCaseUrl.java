@@ -26,6 +26,13 @@ public class DeptCaseUrl extends BaseURL{
 	 */
 	public static final String LIST_CASE = "/list_case" + DYNAMIC_WEB_SUFFIX;
 	/**
+	 * 案件批量分配页面
+	 * <br>/casemgt/deptCase/batch_distribute_case_page
+	 */
+	public static final String BATCH_DISTRIBUTE_CASE_PAGE = "/batch_distribute_case_page" + DYNAMIC_WEB_SUFFIX;
+	
+	
+	/**
 	 * 导入案件页面
 	 * <br>/flowsys/deptCase/import_case_page
 	 */

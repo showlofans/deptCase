@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.deptcase.casemgt.entity.ContactRecordPo" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="cc_id" property="ccId" jdbcType="BIGINT" />
-    <result column="case_id" property="caseId" jdbcType="INTEGER" />
+    <result column="case_id" property="caseId" jdbcType="BIGINT" />
     <result column="case_contact" property="caseContact" jdbcType="VARCHAR" />
     <result column="record_user" property="recordUser" jdbcType="INTEGER" />
     <result column="record_user_name" property="recordUserName" jdbcType="VARCHAR" />
@@ -29,7 +29,7 @@
     insert into contact_record (id, cc_id, case_id, 
       case_contact, record_user, record_user_name, 
       contact_record, record_time)
-    values (#{id,jdbcType=BIGINT}, #{ccId,jdbcType=BIGINT}, #{caseId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=BIGINT}, #{ccId,jdbcType=BIGINT}, #{caseId,jdbcType=BIGINT}, 
       #{caseContact,jdbcType=VARCHAR}, #{recordUser,jdbcType=INTEGER}, #{recordUserName,jdbcType=VARCHAR}, 
       #{contactRecord,jdbcType=VARCHAR}, #{recordTime,jdbcType=BIGINT})
   </insert>
@@ -95,7 +95,7 @@
         cc_id = #{ccId,jdbcType=BIGINT},
       </if>
       <if test="caseId != null" >
-        case_id = #{caseId,jdbcType=INTEGER},
+        case_id = #{caseId,jdbcType=BIGINT},
       </if>
       <if test="caseContact != null" >
         case_contact = #{caseContact,jdbcType=VARCHAR},
@@ -118,7 +118,7 @@
   <update id="updateByPrimaryKey" parameterType="com.deptcase.casemgt.entity.ContactRecordPo" >
     update contact_record
     set cc_id = #{ccId,jdbcType=BIGINT},
-      case_id = #{caseId,jdbcType=INTEGER},
+      case_id = #{caseId,jdbcType=BIGINT},
       case_contact = #{caseContact,jdbcType=VARCHAR},
       record_user = #{recordUser,jdbcType=INTEGER},
       record_user_name = #{recordUserName,jdbcType=VARCHAR},

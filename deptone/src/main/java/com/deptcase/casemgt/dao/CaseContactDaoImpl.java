@@ -43,7 +43,7 @@ public class CaseContactDaoImpl implements CaseContactDao {
 
 	@Override
 	public CaseContactPo selectByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -72,6 +72,11 @@ public class CaseContactDaoImpl implements CaseContactDao {
 	@Override
 	public int updateContactByPo(CaseContactPo caseContactPo) {
 		return sqlSessionTemplate.update("updateContactByPo", caseContactPo);
+	}
+
+	@Override
+	public List<CaseContactPo> getContactByCaseId(Map<String, Object> params) {
+		return sqlSessionTemplate.selectList("getContactByCaseId", params);
 	}
 
 //	@Override

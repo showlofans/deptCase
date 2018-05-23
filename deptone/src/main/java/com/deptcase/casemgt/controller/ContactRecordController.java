@@ -1,32 +1,23 @@
 package com.deptcase.casemgt.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.deptcase.casemgt.ao.CaseContactAO;
 import com.deptcase.casemgt.ao.DeptCaseAO;
+import com.deptcase.casemgt.entity.CaseContactPo;
 import com.deptcase.casemgt.entity.ContactRecordPo;
-import com.deptcase.casemgt.entity.DeptCasePo;
+import com.deptcase.casemgt.entity.DeptCaseVO;
 import com.deptcase.casemgt.url.ContactRecordUrl;
-import com.deptcase.casemgt.url.DeptCaseUrl;
-import com.deptcase.util.PageParam;
-import com.deptcase.util.Pagination;
-import com.deptcase.util.StringHelper;
 
 /**
  * @description: 案件处理controller
@@ -40,9 +31,12 @@ import com.deptcase.util.StringHelper;
 @RequestMapping(value=ContactRecordUrl.MODOE_NAME)
 public class ContactRecordController {
 
+	@Resource
+	private DeptCaseAO deptCaseAO;
 //	@Resource
-//	private DeptCaseAO deptCaseAO;
-	
+//	private DeptCaseDao deptCaseDao;
+	@Resource
+	private CaseContactAO caseContactAO;
 	
 	/**
 	 * @description: 联系记录列表
@@ -64,6 +58,12 @@ public class ContactRecordController {
 //			pageParam = new PageParam(1, 10);
 //		}
 //		Pagination<DeptCasePo> pagination = deptCaseAO.listCase(deptCasePo, pageParam);
+		Long caseId = contactRecordPo.getCaseId();
+		List<CaseContactPo> contactList = caseContactAO.getContactByCaseId(caseId);
+		resultMap.put("contactList", contactList);//联系人列表
+//		deptCaseAO.
+		DeptCaseVO deptCase = deptCaseAO.getOneCaseById(caseId);
+		resultMap.put("deptCase", deptCase);
 		resultMap.put("contactRecordPo", contactRecordPo);
 		return new ModelAndView("/deptcase/contact_record_list", "resultMap", resultMap);
 //		return "/deptcase/contact_record_list";

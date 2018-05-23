@@ -55,4 +55,13 @@ public interface CaseContactDao {
      * @createTime:2018年5月22日 下午3:52:48
      */
     int updateContactByPo(CaseContactPo caseContactPo);
+    
+    /**
+     * @description:通过参数案件ID查找所有关联的联系人
+     * @param caseId
+     * @return
+     * @author:微族通道代码设计人 宁强
+     * @createTime:2018年5月23日 上午10:23:51
+     */
+    List<CaseContactPo> getContactByCaseId(Map<String, Object> params);
 }

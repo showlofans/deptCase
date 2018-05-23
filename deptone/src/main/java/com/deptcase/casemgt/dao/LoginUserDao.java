@@ -62,6 +62,15 @@ public interface LoginUserDao {
      */
     LoginUserPo getOneUser(Map<String, Object> params);
     
+	/**
+	 * @description: 获得用户信息
+	 * @param id
+	 * @return
+	 * @author:微族通道代码设计人 宁强
+	 * @createTime:2018年5月23日 下午6:45:03
+	 */
+	LoginUserPo getOneUserById(Integer id);
+    
     /**
      * @description:统计用户数量
      * @param parasm

@@ -76,4 +76,9 @@ public class LoginUserDaoImpl implements LoginUserDao {
 		return sqlSessionTemplate.insert("addUserKey", record);
 	}
 
+	@Override
+	public LoginUserPo getOneUserById(Integer id) {
+		return sqlSessionTemplate.selectOne("getOneUserById", id);
+	}
+
 }

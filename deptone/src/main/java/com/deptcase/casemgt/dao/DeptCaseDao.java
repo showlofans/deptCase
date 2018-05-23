@@ -7,13 +7,13 @@ import com.deptcase.casemgt.entity.CaseBindContactPo;
 import com.deptcase.casemgt.entity.DeptCasePo;
 
 public interface DeptCaseDao {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(DeptCasePo record);
 
     int insertSelective(DeptCasePo record);
 
-    DeptCasePo selectByPrimaryKey(Integer id);
+    DeptCasePo getOneCaseById(Long id);
 
     int updateByPrimaryKeySelective(DeptCasePo record);
 
@@ -53,4 +53,13 @@ public interface DeptCaseDao {
      * @createTime:2018年5月19日 下午1:06:21
      */
     List<CaseBindContactPo> getBindingCase(Map<String,Object> params);
+    
+    /**
+     * @description: 查询未分配的案件列表
+     * @param params
+     * @return
+     * @author:微族通道代码设计人 宁强
+     * @createTime:2018年5月23日 下午4:40:27
+     */
+//    List<DeptCasePo> listUnDisCase(Map<String,Object> params);
 }

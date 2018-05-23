@@ -65,8 +65,9 @@
 						${loginUser.createTimeStr }
 					</td>
 					<td class="f-14 td-manage success"> 
-						分配&nbsp;&nbsp;	删除&nbsp;&nbsp;	
-						<a data-title="联系记录" data-href="/casemgt/contactRecord/list_record.do" onclick="Hui_admin_tab(this)" title="联系记录"">记录</a>
+						<a data-title="分配" data-href="/casemgt/deptCase/batch_distribute_case_page.do?contactId=${loginUser.id }" onclick="Hui_admin_tab(this)" title="分配"">分配</a>
+						记录&nbsp;&nbsp;	删除&nbsp;&nbsp;	编辑
+						<!-- <a data-title="联系记录" data-href="/casemgt/contactRecord/list_record.do" onclick="Hui_admin_tab(this)" title="联系记录"">记录</a> -->
 					</td>
 						<%--<a style="text-decoration:none" onClick="deptcase_del('/flowsys/loginUser/deptcase_del.do','${loginUser.id}','${loginUser.epName }')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> 
 						<a style="text-decoration:none" class="ml-5" onClick="deptcase_edit('平台信息编辑','/flowsys/loginUser/deptcase_edit_page.do?epId=${loginUser.id}','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <!-- <a style="text-decoration:none" class="ml-5" onClick="deptcase_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> --></td> --%>
@@ -77,6 +78,7 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	<mytag:Pagination pagination="${resultMap.pagination}" queryForm="dataListForm" divId="deptcaselistId" />
 	<footer class="footer mt-20">
 		<div class="container">
 			<p><!-- 感谢jQuery、layer、laypage、Validform、UEditor、My97DatePicker、iconfont、Datatables、WebUploaded、icheck、highcharts、bootstrap-Switch<br> -->

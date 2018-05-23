@@ -44,6 +44,11 @@ public class DeptCasePo {
     private Integer accessLog;				//案件操作类型
 
     private Long createTime;				//案件创建时间
+    	
+    private String lastAccessStr;			//案件更新时间展示
+    private String createTimeStr;			//案件创建时间展示
+    private String deptDateStr;				//贷款日期展示
+    private String deptEndDateStr;			//到期日期展示
     
     private String deptFor;					//贷款用途
     
@@ -51,8 +56,9 @@ public class DeptCasePo {
     
     private String loanNumber;				//借据号
     
-    //
-    private List<String> contactIds;			//联系人身份证号列表（参数）
+    private Integer caseState;				//CaseStateEnum 案件状态
+    
+//    private List<String> contactIds;			//联系人身份证号列表（参数）
 
     
     public DeptCasePo() {
@@ -75,7 +81,7 @@ public class DeptCasePo {
 	 * @param warrantorWay
 	 */
 	public DeptCasePo(Double deptAmount, Double deptBalance, Double deptProfit,
-			String dcId, String caseOrg, String customerContact,
+			String dcId, String caseOrg, String customerContact,Integer caseState,
 			String customerLocation, String caseWarrantor, String caseCustomer,
 			Integer caseAdmin, Integer accessLog,  String deptFor, String warrantorWay) {
 		super();
@@ -85,6 +91,7 @@ public class DeptCasePo {
 		this.dcId = dcId;
 		this.caseOrg = caseOrg;
 		this.customerContact = customerContact;
+		this.caseState = caseState;
 		this.customerLocation = customerLocation;
 		this.caseWarrantor = caseWarrantor;
 		this.caseCustomer = caseCustomer;
@@ -94,20 +101,52 @@ public class DeptCasePo {
 		this.warrantorWay=warrantorWay;
 	}
 	
+	public String getLastAccessStr() {
+		return lastAccessStr;
+	}
+
+	public void setLastAccessStr(String lastAccessStr) {
+		this.lastAccessStr = lastAccessStr;
+	}
+
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
+	}
+
+	public String getDeptDateStr() {
+		return deptDateStr;
+	}
+
+	public void setDeptDateStr(String deptDateStr) {
+		this.deptDateStr = deptDateStr;
+	}
+
+	public String getDeptEndDateStr() {
+		return deptEndDateStr;
+	}
+
+	public void setDeptEndDateStr(String deptEndDateStr) {
+		this.deptEndDateStr = deptEndDateStr;
+	}
+
+	public Integer getCaseState() {
+		return caseState;
+	}
+
+	public void setCaseState(Integer caseState) {
+		this.caseState = caseState;
+	}
+
 	public String getLoanNumber() {
 		return loanNumber;
 	}
 
 	public void setLoanNumber(String loanNumber) {
 		this.loanNumber = loanNumber;
-	}
-
-	public List<String> getContactIds() {
-		return contactIds;
-	}
-
-	public void setContactIds(List<String> contactIds) {
-		this.contactIds = contactIds;
 	}
 
 	public String getDeptFor() {

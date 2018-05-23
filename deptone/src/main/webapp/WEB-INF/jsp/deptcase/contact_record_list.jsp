@@ -38,27 +38,117 @@
 	<div class="mt-20">
 		<table  cellspacing="0" cellpadding="4" class="banking_processing_con">
 			<tr>
+				<td colspan="3" class="table_tdheight"><span>案件信息 </span>
+				 </td>
+			</tr>
+			<tr>
+				<td width="2"></td>
+				<td align="center" valign="top">
+					<table class="table table-border table-bordered table-bg table-hover table-sort">
+						<tr>
+							<td width="100">
+							客户名称：<input type="text" value="${resultMap.deptCase.caseCustomer }" >
+							</td>
+							<td width="100">
+							证件号码：<input type="text" value="${resultMap.deptCase.dcId }" >
+							</td>
+							<td width="100">
+							联系电话：<input type="text" value="${resultMap.deptCase.customerContact }" >
+							</td>
+							<td width="100">
+							联系地址：<input type="text" value="${resultMap.deptCase.customerLocation }" >
+							</td>
+							<!-- <td style="text-align:left">
+							</td> -->
+						</tr>
+						<tr>
+							<td width="100">
+							贷款金额：<input type="text" value="${resultMap.deptCase.deptAmount }" >
+							</td>
+							<td width="100">
+							贷款余额：<input type="text" value="${resultMap.deptCase.deptBalance }" >
+							</td>
+							<td width="100">
+							结欠利息：<input type="text" value="${resultMap.deptCase.deptProfit }" >
+							</td>
+							<td width="100">
+							贷款日期：<input type="text" value="${resultMap.deptCase.deptDate }" >
+							</td>
+							<!-- <td style="text-align:left">
+							</td> -->
+						</tr>
+						<tr>
+							<td width="100">
+							机构名称：<input type="text" value="${resultMap.deptCase.caseOrg }" >
+							</td>
+							<td width="100">
+							案件担保人：<input type="text" value="${resultMap.deptCase.caseWarrantor }" >
+							</td>
+							<td width="100">
+							保证方式：<input type="text" value="${resultMap.deptCase.warrantorWay }" >
+							</td>
+							<td width="100">
+							贷款用途：<input type="text" value="${resultMap.deptCase.deptFor }" >
+							</td>
+							<!-- <td style="text-align:left">
+							</td> -->
+						</tr>
+						<tr>
+							<td width="100">
+							借据号：<input type="text" value="${resultMap.deptCase.loanNumber }" >
+							</td>
+							<td width="100">
+							到期日期：<input type="text" value="${resultMap.deptCase.deptEndDate }" >
+							</td>
+							<td width="100">
+							案件状态：<input type="text" value="${resultMap.deptCase.caseState }" >
+							</td>
+							<td width="100">
+							导入时间：<input type="text" value="${resultMap.deptCase.createTime }" >
+							</td>
+							<!-- <td style="text-align:left">
+							</td> -->
+						</tr>
+						
+					</table>
+				</td>
+				<td width="2"></td>
+			</tr>
+			
+			<tr>
 				<td colspan="3" class="table_tdheight"><span>联系人信息</span> &nbsp;&nbsp;<a class="btn btn-primary radius">添加联系人 </a></span></td>
 			</tr>
 			<tr>
 				<td width="2"></td>
 				<td align="center" valign="top">
-				<form name="detailForm" method="post">
+				<form name="contactForm" method="post">
 					<table  border="0" class="table table-border table-bordered table-bg table-hover table-sort">
 						<tr align="center">
-							<th align="center">联系人名字</th>
-							<th align="center">联系人身份证号</th>
-							<th align="center">手机号码</th>
-							<th align="center">户籍关系</th>
-							<th align="center">户籍地址</th>
-							<th align="center">其他关系</th>
-							<th align="center">现居地址</th>
-							<th align="center">摘要</th>
-							<th align="center">操作</th>
+							<th width="80">联系人名字</th>
+							<th width="80">联系人身份证号</th>
+							<th width="80">手机号码</th>
+							<th width="80">户籍关系</th>
+							<th width="80">户籍地址</th>
+							<th width="80">其他关系</th>
+							<th width="80">现居地址</th>
+							<th width="80">备注信息</th>
+							<th width="80">操作</th>
 						</tr>
-						<tr class="tr_addcolor">
-							<td class="td_3 text-c" align="center" colspan="9"><font color="#A63E19">没有查到相关记录</font></td>
-						</tr>
+						<c:forEach items="${resultMap.contactList }" var="contact" varStatus="vs">
+							<tr class="tr_addcolor">
+								<td class="td_3 text-c"><font color="#A63E19">${contact.contactName }</font></td>
+								<td class="td_3 text-c"><font color="#A63E19">${contact.contactDcid }</font></td>
+								<td class="td_3 text-c"><font color="#A63E19">${contact.contactNumber }</font></td>
+								<td class="td_3 text-c"><font color="#A63E19">${contact.householdShip }</font></td>
+								<td class="td_3 text-c"><font color="#A63E19">${contact.householdLocation }</font></td>
+								<td class="td_3 text-c"><font color="#A63E19">${contact.otherContactShip }</font></td>
+								<td class="td_3 text-c"><font color="#A63E19">${contact.contactLocation }</font></td>
+								<td class="td_3 text-c"><font color="#A63E19">${contact.contactRemark }</font></td>
+								<td class="td_3 text-c"><font color="#A63E19">
+									修改
+								</font></td>
+							</tr>
+						</c:forEach>
 					</table>
 					</form>
 				</td>
